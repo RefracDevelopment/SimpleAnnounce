@@ -11,5 +11,6 @@ commands:
     aliases:
       - broadcast
       - bcast
+      - bc
   announcereload:
     description: Announce reload command

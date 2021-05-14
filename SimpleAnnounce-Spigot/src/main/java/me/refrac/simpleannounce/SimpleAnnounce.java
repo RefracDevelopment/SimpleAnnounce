@@ -44,7 +44,7 @@ public final class SimpleAnnounce extends JavaPlugin {
         // Plugin shutdown logic
         instance = null;
 
-        Bukkit.getScheduler().cancelAllTasks();
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
     public static SimpleAnnounce getInstance() {

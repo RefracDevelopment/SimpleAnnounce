@@ -24,7 +24,7 @@ public class AnnounceReloadCommand implements CommandExecutor {
             return false;
         }
         SimpleAnnounce.getInstance().reloadConfig();
-        Bukkit.getScheduler().cancelAllTasks();
+        Bukkit.getScheduler().cancelTasks(SimpleAnnounce.getInstance());
         Bukkit.getScheduler().runTaskTimerAsynchronously(SimpleAnnounce.getInstance(), new AnnounceTask(), 0, SimpleAnnounce.getInstance().getConfig().getInt("Interval"));
         sender.sendMessage(Utils.format("&7Config files reloaded. Changes should be live in-game!"));
         return true;
