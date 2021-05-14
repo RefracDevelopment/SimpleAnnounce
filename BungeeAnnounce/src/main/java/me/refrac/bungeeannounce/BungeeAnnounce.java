@@ -53,6 +53,7 @@ public final class BungeeAnnounce extends Plugin {
         instance = null;
 
         ProxyServer.getInstance().getScheduler().cancel(this);
+        ProxyServer.getInstance().getPluginManager().unregisterCommands(this);
     }
 
     public static BungeeAnnounce getInstance() {

@@ -20,7 +20,7 @@ public class Utils {
         return new TextComponent(ChatColor.translateAlternateColorCodes('&', message));
     }
 
-    public static String getName = "SimpleAnnounce";
+    public static String getName = "BungeeAnnounce";
     public static String getVersion = "1.0";
     public static String getDeveloper = "Refrac";
 
