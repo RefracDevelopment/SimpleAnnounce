@@ -2,14 +2,14 @@
  * Copyright (c) Refrac
  * If you have any questions please email refracplaysmc@gmail.com or reach me on Discord
  */
-package me.refrac.bungeeannounce;
+package me.refrac.simpleannounce.bungee;
 
 import com.google.common.io.ByteStreams;
-import me.refrac.bungeeannounce.commands.AnnounceCommand;
-import me.refrac.bungeeannounce.commands.AnnounceReloadCommand;
-import me.refrac.bungeeannounce.tasks.AnnounceTask;
-import me.refrac.bungeeannounce.utils.Logger;
-import me.refrac.bungeeannounce.utils.Utils;
+import me.refrac.simpleannounce.bungee.commands.AnnounceCommand;
+import me.refrac.simpleannounce.bungee.commands.AnnounceReloadCommand;
+import me.refrac.simpleannounce.bungee.tasks.AnnounceTask;
+import me.refrac.simpleannounce.bungee.utils.Logger;
+import me.refrac.simpleannounce.bungee.utils.Utils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -67,7 +67,7 @@ public final class BungeeAnnounce extends Plugin {
     public void loadConfig() {
         try {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
-                    loadResource(this, "config.yml"));
+                    loadResource(this, "bungee-config.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,0 +1,16 @@
+name: SimpleAnnounce
+version: '1.0'
+main: me.refrac.simpleannounce.spigot.SimpleAnnounce
+author: Refrac
+description: A Simple Plugin To Keep Your Players Updated
+website: https://discord.gg/jVnmm7QnQU
+
+commands:
+  announce:
+    description: Announce command
+    aliases:
+      - broadcast
+      - bcast
+      - bc
+  announcereload:
+    description: Announce reload command

@@ -2,13 +2,13 @@
  * Copyright (c) Refrac
  * If you have any questions please email refracplaysmc@gmail.com or reach me on Discord
  */
-package me.refrac.simpleannounce;
+package me.refrac.simpleannounce.spigot;
 
-import me.refrac.simpleannounce.commands.AnnounceCommand;
-import me.refrac.simpleannounce.commands.AnnounceReloadCommand;
-import me.refrac.simpleannounce.tasks.AnnounceTask;
-import me.refrac.simpleannounce.utils.Logger;
-import me.refrac.simpleannounce.utils.Utils;
+import me.refrac.simpleannounce.spigot.commands.AnnounceCommand;
+import me.refrac.simpleannounce.spigot.commands.AnnounceReloadCommand;
+import me.refrac.simpleannounce.spigot.tasks.AnnounceTask;
+import me.refrac.simpleannounce.spigot.utils.Logger;
+import me.refrac.simpleannounce.spigot.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

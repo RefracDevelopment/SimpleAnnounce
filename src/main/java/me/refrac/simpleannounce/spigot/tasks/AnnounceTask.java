@@ -2,11 +2,11 @@
  * Copyright (c) Refrac
  * If you have any questions please email refracplaysmc@gmail.com or reach me on Discord
  */
-package me.refrac.simpleannounce.tasks;
+package me.refrac.simpleannounce.spigot.tasks;
 
-import me.refrac.simpleannounce.SimpleAnnounce;
-import me.refrac.simpleannounce.utils.Logger;
-import me.refrac.simpleannounce.utils.Utils;
+import me.refrac.simpleannounce.spigot.SimpleAnnounce;
+import me.refrac.simpleannounce.spigot.utils.Logger;
+import me.refrac.simpleannounce.spigot.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
