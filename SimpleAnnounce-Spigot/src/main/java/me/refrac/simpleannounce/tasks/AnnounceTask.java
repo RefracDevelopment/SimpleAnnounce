@@ -26,11 +26,10 @@ public class AnnounceTask implements Runnable {
         String broadcastId = getRandom(broadcastList);
         ConfigurationSection broadcast = SimpleAnnounce.getInstance().getConfig().getConfigurationSection("Announcements." + broadcastId);
         for (String message : broadcast.getStringList("LINES")) {
-            Bukkit.getOnlinePlayers().forEach((player -> player.sendMessage(Utils.format(message.replace("{arrow}", "»")))));
+            Bukkit.getOnlinePlayers().forEach((p -> p.sendMessage(Utils.format(message.replace("{arrow}", "»")))));
         }
 
-        if (broadcast.getBoolean("SOUND.ENABLED") &&
-                broadcast.getString("SOUND.NAME") != null) {
+        if (broadcast.getBoolean("SOUND.ENABLED") && broadcast.getString("SOUND.NAME") != null) {
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
                 try {
                     p.playSound(p.getLocation(), Sound.valueOf(broadcast.getString("SOUND.NAME")), 5.0F, 5.0F);
@@ -41,7 +40,7 @@ public class AnnounceTask implements Runnable {
                     Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
                     Logger.ERROR.out("SimpleAnnounce - Sound Error");
                     Logger.NONE.out("");
-                    Logger.ERROR.out("You have not setup your SOUND NAME for '" + broadcast + "' correctly!");
+                    Logger.ERROR.out("The Sound '" + broadcast.getString("SOUND.NAME") + "' is invalid!");
                     Logger.ERROR.out("Please make sure your SOUND NAME is correct.");
                     Logger.NONE.out("");
                     Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));

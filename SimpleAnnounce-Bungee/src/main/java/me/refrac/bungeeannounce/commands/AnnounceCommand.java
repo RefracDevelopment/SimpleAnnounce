@@ -19,7 +19,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class AnnounceCommand extends Command {
 
     public AnnounceCommand() {
-        super("announce", "bungeeannounce.use", "bcast", "broadcast");
+        super("announce", "bungeeannounce.use",  "bcast", "broadcast");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class AnnounceCommand extends Command {
                     String message = Joiner.on(" ").join(args);
 
                     for (String format : BungeeAnnounce.getConfig().getStringList("Format.LINES")) {
-                        ProxyServer.getInstance().broadcast(Utils.formatComponent(format.replace("{arrow}", "»").replace("{message}", message)));
+                        ProxyServer.getInstance().getPlayers().forEach(p -> p.sendMessage(Utils.formatComponent(format.replace("{arrow}", "»").replace("{message}", message))));
                     }
                 } else {
                     String message = Joiner.on(" ").join(args);

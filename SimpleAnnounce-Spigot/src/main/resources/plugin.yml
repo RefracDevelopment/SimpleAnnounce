@@ -9,7 +9,6 @@ commands:
   announce:
     description: Announce command
     aliases:
-      - simpleannounce
       - broadcast
       - bcast
   announcereload:

@@ -37,7 +37,7 @@ public class AnnounceCommand implements CommandExecutor {
                     String message = Joiner.on(" ").join(args);
 
                     for (String format : SimpleAnnounce.getInstance().getConfig().getStringList("Format.LINES")) {
-                        Bukkit.broadcastMessage(Utils.format(format.replace("{arrow}", "»").replace("{message}", message)));
+                        Bukkit.getOnlinePlayers().forEach((p -> p.sendMessage(Utils.format(format.replace("{arrow}", "»").replace("{message}", message)))));
                     }
                 } else {
                     if (!player.hasPermission("simpleannounce.use")) {
