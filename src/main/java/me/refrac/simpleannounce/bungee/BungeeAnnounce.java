@@ -24,20 +24,17 @@ import java.util.concurrent.TimeUnit;
  */
 public final class BungeeAnnounce extends Plugin {
 
-    private static BungeeAnnounce instance;
     private static Configuration config;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        instance = this;
-
         loadConfig();
 
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand());
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand(this));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
 
-        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(), 0, getConfig().getInt("Interval"), TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(this), 0, getConfig().getInt("Interval"), TimeUnit.SECONDS);
 
         Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
         Logger.NONE.out(Utils.format("&e" + Utils.getName + " has been enabled."));
@@ -50,17 +47,11 @@ public final class BungeeAnnounce extends Plugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        instance = null;
-
         ProxyServer.getInstance().getScheduler().cancel(this);
         ProxyServer.getInstance().getPluginManager().unregisterCommands(this);
     }
 
-    public static BungeeAnnounce getInstance() {
-        return instance;
-    }
-
-    public static Configuration getConfig() {
+    public Configuration getConfig() {
         return config;
     }
 

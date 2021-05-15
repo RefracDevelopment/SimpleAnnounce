@@ -18,15 +18,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class AnnounceReloadCommand extends Command {
 
-    public AnnounceReloadCommand() {
-        super("announcereload", "bungeeannounce.admin");
+    private final BungeeAnnounce instance;
+
+    public AnnounceReloadCommand(BungeeAnnounce instance) {
+        super("announcereload", "simpleannounce.admin");
+        this.instance = instance;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        BungeeAnnounce.getInstance().loadConfig();
-        ProxyServer.getInstance().getScheduler().cancel(BungeeAnnounce.getInstance());
-        ProxyServer.getInstance().getScheduler().schedule(BungeeAnnounce.getInstance(), new AnnounceTask(), 0, BungeeAnnounce.getConfig().getInt("Interval"), TimeUnit.SECONDS);
+        instance.loadConfig();
+        ProxyServer.getInstance().getScheduler().cancel(instance);
+        ProxyServer.getInstance().getScheduler().schedule(instance, new AnnounceTask(instance), 0, instance.getConfig().getInt("Interval"), TimeUnit.SECONDS);
         sender.sendMessage(Utils.formatComponent("&7Config files reloaded. Changes should be live in-game!"));
     }
 }

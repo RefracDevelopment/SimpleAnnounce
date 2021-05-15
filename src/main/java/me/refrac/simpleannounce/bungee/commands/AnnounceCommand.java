@@ -18,33 +18,36 @@ import net.md_5.bungee.api.plugin.Command;
  */
 public class AnnounceCommand extends Command {
 
-    public AnnounceCommand() {
-        super("announce", "bungeeannounce.use",  "bcast", "broadcast");
+    private final BungeeAnnounce instance;
+
+    public AnnounceCommand(BungeeAnnounce instance) {
+        super("announce", "simpleannounce.use",  "bcast", "broadcast");
+        this.instance = instance;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (sender instanceof ProxiedPlayer) {
-            ProxiedPlayer player = (ProxiedPlayer) sender;
+        if (!(sender instanceof ProxiedPlayer)) return;
 
-            if (args.length == 0) {
-                player.sendMessage(Utils.formatComponent("&b&lBungeeAnnounce &7by Refrac"));
-                player.sendMessage(new TextComponent(""));
-                player.sendMessage(Utils.formatComponent("&b/announce <message> &7- Announce your messages"));
-                player.sendMessage(Utils.formatComponent("&b/announce reload &7- Reload your config files"));
-            } else if (args.length >= 1) {
-                if (BungeeAnnounce.getConfig().getBoolean("Format.ENABLED")) {
-                    String message = Joiner.on(" ").join(args);
+        ProxiedPlayer player = (ProxiedPlayer) sender;
 
-                    for (String format : BungeeAnnounce.getConfig().getStringList("Format.LINES")) {
-                        ProxyServer.getInstance().getPlayers().forEach(p -> p.sendMessage(Utils.formatComponent(format.replace("{arrow}", "»").replace("{message}", message))));
-                    }
-                } else {
-                    String message = Joiner.on(" ").join(args);
+        if (args.length == 0) {
+            player.sendMessage(Utils.formatComponent("&b&lBungeeAnnounce &7by Refrac"));
+            player.sendMessage(new TextComponent(""));
+            player.sendMessage(Utils.formatComponent("&b/announce <message> &7- Announce your messages"));
+            player.sendMessage(Utils.formatComponent("&b/announce reload &7- Reload your config files"));
+        } else if (args.length >= 1) {
+            if (instance.getConfig().getBoolean("Format.ENABLED")) {
+                String message = Joiner.on(" ").join(args);
 
-                    for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-                        p.sendMessage(Utils.formatComponent(BungeeAnnounce.getConfig().getString("Prefix") + message));
-                    }
+                for (String format : instance.getConfig().getStringList("Format.LINES")) {
+                    ProxyServer.getInstance().getPlayers().forEach(p -> p.sendMessage(Utils.formatComponent(format.replace("{arrow}", "»").replace("{message}", message))));
+                }
+            } else {
+                String message = Joiner.on(" ").join(args);
+
+                for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                    p.sendMessage(Utils.formatComponent(instance.getConfig().getString("Prefix") + message));
                 }
             }
         }

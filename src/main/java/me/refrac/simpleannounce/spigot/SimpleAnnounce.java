@@ -17,19 +17,15 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class SimpleAnnounce extends JavaPlugin {
 
-    private static SimpleAnnounce instance;
-
     @Override
     public void onEnable() {
         // Plugin startup logic
-        instance = this;
-
         saveDefaultConfig();
 
-        getCommand("announce").setExecutor(new AnnounceCommand());
-        getCommand("announcereload").setExecutor(new AnnounceReloadCommand());
+        getCommand("announce").setExecutor(new AnnounceCommand(this));
+        getCommand("announcereload").setExecutor(new AnnounceReloadCommand(this));
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new AnnounceTask(), 0, getConfig().getInt("Interval"));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new AnnounceTask(this), 0, getConfig().getInt("Interval"));
 
         Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
         Logger.NONE.out(Utils.format("&e" + Utils.getName + " has been enabled."));
@@ -42,12 +38,6 @@ public final class SimpleAnnounce extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        instance = null;
-
         Bukkit.getScheduler().cancelTasks(this);
-    }
-
-    public static SimpleAnnounce getInstance() {
-        return instance;
     }
 }

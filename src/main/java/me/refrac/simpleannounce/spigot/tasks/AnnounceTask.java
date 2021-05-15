@@ -20,11 +20,17 @@ import java.util.*;
  */
 public class AnnounceTask implements Runnable {
 
+    private final SimpleAnnounce instance;
+
+    public AnnounceTask(SimpleAnnounce instance) {
+        this.instance = instance;
+    }
+
     @Override
     public void run() {
-        Set<String> broadcastList = SimpleAnnounce.getInstance().getConfig().getConfigurationSection("Announcements").getKeys(false);
+        Set<String> broadcastList = instance.getConfig().getConfigurationSection("Announcements").getKeys(false);
         String broadcastId = getRandom(broadcastList);
-        ConfigurationSection broadcast = SimpleAnnounce.getInstance().getConfig().getConfigurationSection("Announcements." + broadcastId);
+        ConfigurationSection broadcast = instance.getConfig().getConfigurationSection("Announcements." + broadcastId);
         for (String message : broadcast.getStringList("LINES")) {
             Bukkit.getOnlinePlayers().forEach((p -> p.sendMessage(Utils.format(message.replace("{arrow}", "»")))));
         }

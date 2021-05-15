@@ -9,6 +9,11 @@ Interval: 3600 # IN TICKS (1200 TICKS = 1 MINUTE, 3600 TICKS = 1 HOUR)
 # If this is disabled the command will have the Prefix instead
 Format:
   ENABLED: true
+    # Do you want a sound to play?
+  SOUND:
+    ENABLED: false
+    # Sound names changes through versions so if this doesn't work then that is why
+    NAME: LEVEL_UP
   LINES:
     - "&8&m-------------------------------------------------"
     - "&8{arrow} &b&lSIMPLEANNOUNCE"
