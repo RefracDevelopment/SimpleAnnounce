@@ -16,7 +16,7 @@ public class Utils {
     }
 
     public static final String getName = "SimpleAnnounce";
-    public static final String getVersion = "1.0";
+    public static final String getVersion = "1.1";
     public static final String getDeveloper = "Refrac";
 
 }

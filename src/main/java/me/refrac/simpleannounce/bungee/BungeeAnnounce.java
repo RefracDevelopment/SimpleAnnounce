@@ -24,17 +24,17 @@ import java.util.concurrent.TimeUnit;
  */
 public final class BungeeAnnounce extends Plugin {
 
-    private static Configuration config;
+    private Configuration config;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         loadConfig();
 
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand(this));
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand(config));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this, config));
 
-        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(this), 0, getConfig().getInt("Interval"), TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(config), 0, config.getInt("Interval"), TimeUnit.SECONDS);
 
         Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
         Logger.NONE.out(Utils.format("&e" + Utils.getName + " has been enabled."));
@@ -49,10 +49,6 @@ public final class BungeeAnnounce extends Plugin {
         // Plugin shutdown logic
         ProxyServer.getInstance().getScheduler().cancel(this);
         ProxyServer.getInstance().getPluginManager().unregisterCommands(this);
-    }
-
-    public Configuration getConfig() {
-        return config;
     }
 
     public void loadConfig() {

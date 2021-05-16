@@ -18,17 +18,17 @@ import java.util.Set;
  */
 public class AnnounceTask implements Runnable {
 
-    private final BungeeAnnounce instance;
+    private final Configuration config;
 
-    public AnnounceTask(BungeeAnnounce instance) {
-        this.instance = instance;
+    public AnnounceTask(Configuration config) {
+        this.config = config;
     }
 
     @Override
     public void run() {
-        Set<String> broadcastList = (Set<String>) instance.getConfig().getSection("Announcements").getKeys();
+        Set<String> broadcastList = (Set<String>) config.getSection("Announcements").getKeys();
         String broadcastId = getRandom(broadcastList);
-        Configuration broadcast = instance.getConfig().getSection("Announcements." + broadcastId);
+        Configuration broadcast = config.getSection("Announcements." + broadcastId);
         for (String message : broadcast.getStringList("LINES")) {
             ProxyServer.getInstance().getPlayers().forEach((player -> player.sendMessage(Utils.formatComponent(message.replace("{arrow}", "»")))));
         }

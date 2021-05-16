@@ -10,6 +10,7 @@ import me.refrac.simpleannounce.bungee.utils.Utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.config.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,17 +20,19 @@ import java.util.concurrent.TimeUnit;
 public class AnnounceReloadCommand extends Command {
 
     private final BungeeAnnounce instance;
+    private final Configuration config;
 
-    public AnnounceReloadCommand(BungeeAnnounce instance) {
+    public AnnounceReloadCommand(BungeeAnnounce instance, Configuration config) {
         super("announcereload", "simpleannounce.admin");
         this.instance = instance;
+        this.config = config;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         instance.loadConfig();
         ProxyServer.getInstance().getScheduler().cancel(instance);
-        ProxyServer.getInstance().getScheduler().schedule(instance, new AnnounceTask(instance), 0, instance.getConfig().getInt("Interval"), TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(instance, new AnnounceTask(config), 0, config.getInt("Interval"), TimeUnit.SECONDS);
         sender.sendMessage(Utils.formatComponent("&7Config files reloaded. Changes should be live in-game!"));
     }
 }
