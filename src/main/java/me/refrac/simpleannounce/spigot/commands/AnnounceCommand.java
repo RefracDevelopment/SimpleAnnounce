@@ -37,7 +37,7 @@ public class AnnounceCommand implements CommandExecutor {
             player.sendMessage(Utils.format("&b&lSimpleAnnounce &7by Refrac"));
             player.sendMessage("");
             player.sendMessage(Utils.format("&b/announce <message> &7- Announce your messages"));
-            player.sendMessage(Utils.format("&b/announce reload &7- Reload your config files"));
+            player.sendMessage(Utils.format("&b/announce reload &7- Reload your instance.getConfig() files"));
         }
 
         if (args.length != 1) return false;

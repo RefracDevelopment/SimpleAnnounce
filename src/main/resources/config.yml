@@ -33,7 +33,7 @@ Announcements:
       - "&8{arrow} &b&lSIMPLEANNOUNCE &8| &f&lHELLO!"
       - ""
       - "&8{arrow} &7Thank you for downloading SimpleAnnounce!"
-      - "&8{arrow} &7This is the default config, edit it to your liking!"
+      - "&8{arrow} &7This is the default instance.getConfig(), edit it to your liking!"
       - ""
       - "&8{arrow} &7You can visit our discord @ &b&ndiscord.gg/jVnmm7QnQU"
       - "&8&m-------------------------------------------------"

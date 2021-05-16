@@ -31,10 +31,10 @@ public final class BungeeAnnounce extends Plugin {
         // Plugin startup logic
         loadConfig();
 
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand(config));
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this, config));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand(this));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
 
-        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(config), 0, config.getInt("Interval"), TimeUnit.SECONDS);
+        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(this), 0, config.getInt("Interval"), TimeUnit.SECONDS);
 
         Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
         Logger.NONE.out(Utils.format("&e" + Utils.getName + " has been enabled."));
@@ -51,10 +51,14 @@ public final class BungeeAnnounce extends Plugin {
         ProxyServer.getInstance().getPluginManager().unregisterCommands(this);
     }
 
+    public Configuration getConfig() {
+        return config;
+    }
+    
     public void loadConfig() {
         try {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
-                    loadResource(this, "bungee-config.yml"));
+                    loadResource(this, "bungee-instance.getConfig().yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
