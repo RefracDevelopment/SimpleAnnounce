@@ -58,7 +58,7 @@ public final class BungeeAnnounce extends Plugin {
     public void loadConfig() {
         try {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
-                    loadResource(this, "bungee-instance.getConfig().yml"));
+                    loadResource(this, "bungee-config.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
