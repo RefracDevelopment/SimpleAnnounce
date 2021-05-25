@@ -35,10 +35,10 @@ public class AnnounceCommand extends Command {
             player.sendMessage(Utils.formatComponent("&b&lSimpleAnnounce &7by Refrac"));
             player.sendMessage(new TextComponent(""));
             player.sendMessage(Utils.formatComponent("&b/announce <message> &7- Announce your messages"));
-            player.sendMessage(Utils.formatComponent("&b/announce reload &7- Reload your config files"));
+            player.sendMessage(Utils.formatComponent("&b/announcereload &7- Reload your config files"));
         }
 
-        if (args.length != 1) return;
+        if (!(args.length >= 1)) return;
 
         if (instance.getConfig().getBoolean("Format.ENABLED")) {
             String message = Joiner.on(" ").join(args);

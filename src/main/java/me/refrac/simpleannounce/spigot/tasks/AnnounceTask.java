@@ -29,8 +29,16 @@ public class AnnounceTask implements Runnable {
     @Override
     public void run() {
         Set<String> broadcastList = instance.getConfig().getConfigurationSection("Announcements").getKeys(false);
+
+        if (broadcastList.isEmpty()) {
+            Logger.WARNING.out("[SimpleAnnounce] There are no announcements :(");
+            Bukkit.getServer().getScheduler().cancelTasks(instance);
+            return;
+        }
+
         String broadcastId = getRandom(broadcastList);
         ConfigurationSection broadcast = instance.getConfig().getConfigurationSection("Announcements." + broadcastId);
+
         for (String message : broadcast.getStringList("LINES")) {
             Bukkit.getOnlinePlayers().forEach((p -> p.sendMessage(Utils.format(message.replace("{arrow}", "»")))));
         }

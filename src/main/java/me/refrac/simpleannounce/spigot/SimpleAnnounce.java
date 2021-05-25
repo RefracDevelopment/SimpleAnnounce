@@ -25,7 +25,7 @@ public final class SimpleAnnounce extends JavaPlugin {
         getCommand("announce").setExecutor(new AnnounceCommand(this));
         getCommand("announcereload").setExecutor(new AnnounceReloadCommand(this));
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new AnnounceTask(this), 0, getConfig().getInt("Interval"));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new AnnounceTask(this), 0L, getConfig().getLong("Interval")*20);
 
         Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
         Logger.NONE.out(Utils.format("&e" + Utils.getName + " has been enabled."));
