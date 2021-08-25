@@ -1,5 +1,5 @@
 name: SimpleAnnounce
-version: '1.2'
+version: '1.3-beta.1'
 main: me.refrac.simpleannounce.spigot.SimpleAnnounce
 author: Refrac
 description: A Lightweight Announcer Plugin
@@ -8,9 +8,7 @@ website: https://discord.gg/jVnmm7QnQU
 commands:
   announce:
     description: Announce command
-    aliases:
-      - broadcast
-      - bcast
-      - bc
+  announcedev:
+    description: Developer command
   announcereload:
     description: Announce reload command

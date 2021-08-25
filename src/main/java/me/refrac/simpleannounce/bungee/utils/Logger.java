@@ -6,9 +6,6 @@ package me.refrac.simpleannounce.bungee.utils;
 
 import net.md_5.bungee.api.ProxyServer;
 
-/**
- * @author Zachary Baldwin / Refrac
- */
 public enum Logger {
 
     NONE('r'), SUCCESS('a'), ERROR('c'), WARNING('e'), INFO('b');

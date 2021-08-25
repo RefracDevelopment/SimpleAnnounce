@@ -2,6 +2,7 @@
 # If you have suggestions put them in my discord:
 # https://discord.gg/jVnmm7QnQU
 
+# If you don't want a prefix leave this blank
 Prefix: "&b&lSIMPLEANNOUNCE >> &7"
 Interval: 3600 # IN SECONDS (3600 SECONDS = 1 HOUR)
 # This format is if you want to announce manually with /announce <message>
@@ -26,3 +27,22 @@ Announcements:
       - ""
       - "&8{arrow} &7You can visit our discord @ &b&ndiscord.gg/jVnmm7QnQU"
       - "&8&m-------------------------------------------------"
+
+# You will need to restart your server for these changes to work
+Commands:
+  ANNOUNCE:
+    ENABLED: true
+    # Command without /
+    COMMAND: "announce"
+    PERMISSION: "simpleannounce.use"
+    # Command without /
+    # Leave blank if you don't want an alias
+    ALIAS: ""
+  RELOAD:
+    ENABLED: true
+    # Command without /
+    COMMAND: "announcereload"
+    PERMISSION: "simpleannounce.admin"
+    # Command without /
+    # Leave blank if you don't want an alias
+    ALIAS: ""

@@ -6,9 +6,6 @@ package me.refrac.simpleannounce.spigot.utils;
 
 import org.bukkit.ChatColor;
 
-/**
- * @author Zachary Baldwin / Refrac
- */
 public class Utils {
 
     public static String format(String message) {
@@ -16,7 +13,7 @@ public class Utils {
     }
 
     public static final String getName = "SimpleAnnounce";
-    public static final String getVersion = "1.2";
+    public static final String getVersion = "1.3-beta.1";
     public static final String getDeveloper = "Refrac";
 
 }

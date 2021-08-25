@@ -4,37 +4,32 @@
  */
 package me.refrac.simpleannounce.bungee;
 
-import com.google.common.io.ByteStreams;
-import me.refrac.simpleannounce.bungee.commands.AnnounceCommand;
-import me.refrac.simpleannounce.bungee.commands.AnnounceReloadCommand;
-import me.refrac.simpleannounce.bungee.tasks.AnnounceTask;
-import me.refrac.simpleannounce.bungee.utils.Logger;
-import me.refrac.simpleannounce.bungee.utils.Utils;
-import net.md_5.bungee.api.ProxyServer;
+import me.refrac.simpleannounce.bungee.commands.*;
+import me.refrac.simpleannounce.bungee.tasks.*;
+import me.refrac.simpleannounce.bungee.utils.*;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
 
-import java.io.*;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author Zachary Baldwin / Refrac
- */
 public final class BungeeAnnounce extends Plugin {
-
-    private Configuration config;
+    private FileUtil fileUtil;
+    private DiscordImpl discordImpl;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        loadConfig();
+        fileUtil = new FileUtil(this);
+        discordImpl = new DiscordImpl(this);
 
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceCommand(this));
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
+        fileUtil.loadConfig();
+        fileUtil.loadDiscord();
 
-        ProxyServer.getInstance().getScheduler().schedule(this, new AnnounceTask(this), 0, config.getInt("Interval"), TimeUnit.SECONDS);
+        registerCommands();
+        registerListeners();
+
+        if (getProxy().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            Logger.INFO.out("[" + Utils.getName + "] Hooked into PlaceholderAPI.");
+        }
 
         Logger.NONE.out(Utils.format("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
         Logger.NONE.out(Utils.format("&e" + Utils.getName + " has been enabled."));
@@ -47,39 +42,33 @@ public final class BungeeAnnounce extends Plugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        ProxyServer.getInstance().getScheduler().cancel(this);
-        ProxyServer.getInstance().getPluginManager().unregisterCommands(this);
+        getProxy().getScheduler().cancel(this);
+        getProxy().getPluginManager().unregisterCommands(this);
+        getProxy().getPluginManager().unregisterListeners(this);
     }
 
-    public Configuration getConfig() {
-        return config;
-    }
-    
-    public void loadConfig() {
-        try {
-            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
-                    loadResource(this, "bungee-config.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void registerCommands() {
+        if (fileUtil.getConfig().getBoolean("Commands.ANNOUNCE.ENABLED")) {
+            getProxy().getPluginManager().registerCommand(this, new AnnounceCommand(this));
+        }
+        getProxy().getPluginManager().registerCommand(this, new AnnounceDevCommand(this));
+        if (fileUtil.getConfig().getBoolean("Commands.RELOAD.ENABLED")) {
+            getProxy().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
         }
     }
 
-    private File loadResource(Plugin plugin, String resource) {
-        File folder = plugin.getDataFolder();
-        if (!folder.exists())
-            folder.mkdir();
-        File resourceFile = new File(folder, resource);
-        try {
-            if (!resourceFile.exists()) {
-                resourceFile.createNewFile();
-                try (InputStream in = plugin.getResourceAsStream(resource);
-                     OutputStream out = new FileOutputStream(resourceFile)) {
-                    ByteStreams.copy(in, out);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return resourceFile;
+    private void registerListeners() {
+        getProxy().getPluginManager().registerListener(this, new AnnounceDevCommand(this));
+
+        getProxy().getScheduler().schedule(this, new AnnounceTask(this), 20, fileUtil.getConfig().getInt("Interval"), TimeUnit.SECONDS);
     }
+
+    public FileUtil getFileUtil() {
+        return fileUtil;
+    }
+
+    public DiscordImpl getDiscordImpl() {
+        return discordImpl;
+    }
+
 }

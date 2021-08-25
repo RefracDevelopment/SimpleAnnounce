@@ -14,6 +14,9 @@ Format:
     ENABLED: false
     # Sound names changes through versions so if this doesn't work then that is why
     NAME: LEVEL_UP
+    # You should keep both of these the same 1.0 & 1.0, 5.0 & 5.0 etc
+    VOLUME: 1.0
+    PITCH: 1.0
   LINES:
     - "&8&m-------------------------------------------------"
     - "&8{arrow} &b&lSIMPLEANNOUNCE"
@@ -28,6 +31,9 @@ Announcements:
       ENABLED: false
       # Sound names changes through versions so if this doesn't work then that is why
       NAME: LEVEL_UP
+      # You should keep both of these the same 1.0 & 1.0, 5.0 & 5.0 etc
+      VOLUME: 1.0
+      PITCH: 1.0
     LINES:
       - "&8&m-------------------------------------------------"
       - "&8{arrow} &b&lSIMPLEANNOUNCE &8| &f&lHELLO!"
@@ -37,3 +43,12 @@ Announcements:
       - ""
       - "&8{arrow} &7You can visit our discord @ &b&ndiscord.gg/jVnmm7QnQU"
       - "&8&m-------------------------------------------------"
+
+# You will need to restart your server for these changes to work
+Commands:
+  ANNOUNCE:
+    ENABLED: true
+    PERMISSION: "simpleannounce.use"
+  RELOAD:
+    ENABLED: true
+    PERMISSION: "simpleannounce.admin"

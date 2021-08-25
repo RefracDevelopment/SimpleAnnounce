@@ -1,0 +1,8 @@
+Discord:
+  ENABLED: false
+  WEBHOOK: "INSERT-WEBHOOK-HERE"
+  # Do you want an embed or a normal message?
+  EMBED-MESSAGE: true
+  # This will either be the username or the embed title
+  TITLE: "Announcement Logs"
+  FOOTER: "New announcement | Created by Zach.#6436 / Refrac"

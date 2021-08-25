@@ -6,9 +6,6 @@ package me.refrac.simpleannounce.spigot.utils;
 
 import org.bukkit.Bukkit;
 
-/**
- * @author Zachary Baldwin / Refrac
- */
 public enum Logger {
 
     NONE('r'), SUCCESS('a'), ERROR('c'), WARNING('e'), INFO('b');

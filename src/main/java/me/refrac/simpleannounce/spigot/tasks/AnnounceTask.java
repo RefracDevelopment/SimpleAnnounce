@@ -4,9 +4,9 @@
  */
 package me.refrac.simpleannounce.spigot.tasks;
 
-import me.refrac.simpleannounce.spigot.SimpleAnnounce;
-import me.refrac.simpleannounce.spigot.utils.Logger;
-import me.refrac.simpleannounce.spigot.utils.Utils;
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.refrac.simpleannounce.spigot.*;
+import me.refrac.simpleannounce.spigot.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -15,11 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-/**
- * @author Zachary Baldwin / Refrac
- */
 public class AnnounceTask implements Runnable {
-
     private final SimpleAnnounce instance;
 
     public AnnounceTask(SimpleAnnounce instance) {
@@ -40,13 +36,20 @@ public class AnnounceTask implements Runnable {
         ConfigurationSection broadcast = instance.getConfig().getConfigurationSection("Announcements." + broadcastId);
 
         for (String message : broadcast.getStringList("LINES")) {
-            Bukkit.getOnlinePlayers().forEach((p -> p.sendMessage(Utils.format(message.replace("{arrow}", "»")))));
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(PlaceholderAPI.setPlaceholders(p, Utils.format(
+                        message.replace("{arrow}", "»")))));
+            } else {
+                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(Utils.format(
+                        message.replace("{arrow}", "»"))));
+            }
         }
 
         if (broadcast.getBoolean("SOUND.ENABLED") && broadcast.getString("SOUND.NAME") != null) {
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
                 try {
-                    p.playSound(p.getLocation(), Sound.valueOf(broadcast.getString("SOUND.NAME")), 5.0F, 5.0F);
+                    p.playSound(p.getLocation(), Sound.valueOf(broadcast.getString("SOUND.NAME")),
+                            (float) broadcast.getInt("SOUND.VOLUME"), (float) broadcast.getInt("SOUND.PITCH"));
                 } catch (Exception e) {
                     if (p.hasPermission("simpleannounce.admin")) {
                         p.sendMessage(ChatColor.RED + "Something went wrong with the Sound Name. Check console for more information.");
@@ -63,7 +66,7 @@ public class AnnounceTask implements Runnable {
         }
     }
 
-    private static String getRandom(Set<String> set) {
+    private String getRandom(Set<String> set) {
         int index = (new Random()).nextInt(set.size());
         Iterator<String> iterator = set.iterator();
         for (int i = 0; i < index; i++) {
