@@ -19,19 +19,30 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refrac.simpleannounce.spigot.command;
+package me.refrac.simpleannounce.spigot.utilities;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import me.refrac.simpleannounce.shared.Settings;
+import me.refrac.simpleannounce.spigot.utilities.chat.Color;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CommandInfo {
-    String name();
-    String description() default "No description has been set.";
-    String permission() default "";
-    boolean requiresPlayer();
-    boolean requiresDev() default false;
+public class DevJoin implements Listener {
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (!player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID)) return;
+
+        Color.sendMessage(player, " ", true);
+        Color.sendMessage(player, "&aWelcome " + Settings.getName + " Developer!", true);
+        Color.sendMessage(player, "&aThis server is currently running " + Settings.getName + " &bv" + Settings.getVersion + "&a.", true);
+        Color.sendMessage(player, "&aPlugin name&7: &f" + Settings.getName, true);
+        Color.sendMessage(player, " ", true);
+        Color.sendMessage(player, "&aServer version&7: &f" + Bukkit.getVersion(), true);
+        Color.sendMessage(player, " ", true);
+    }
 }

@@ -19,19 +19,13 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refrac.simpleannounce.spigot.command;
+package me.refrac.simpleannounce.shared;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class Settings {
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CommandInfo {
-    String name();
-    String description() default "No description has been set.";
-    String permission() default "";
-    boolean requiresPlayer();
-    boolean requiresDev() default false;
+    public static final String getName = "SimpleAnnounce";
+    public static final String getVersion = "1.4";
+    public static final String getDevUUID = "d9c670ed-d7d5-45fb-a144-8b8be86c4a2d";
+    public static final String getDeveloper = "Refrac";
+
 }

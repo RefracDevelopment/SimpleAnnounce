@@ -19,19 +19,22 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refrac.simpleannounce.spigot.command;
+package me.refrac.simpleannounce.bungee.utilities;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import me.refrac.simpleannounce.bungee.utilities.chat.Color;
+import me.refrac.simpleannounce.shared.Settings;
+import net.md_5.bungee.api.ProxyServer;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CommandInfo {
-    String name();
-    String description() default "No description has been set.";
-    String permission() default "";
-    boolean requiresPlayer();
-    boolean requiresDev() default false;
+public enum Logger {
+
+    NONE('r'), SUCCESS('a'), ERROR('c'), WARNING('e'), INFO('b');
+
+    char color;
+
+    Logger(char color) { this.color = color; }
+
+    public void out(String message) {
+        message = Color.translate(String.format("&%c%s", this.color, message));
+        ProxyServer.getInstance().getConsole().sendMessage(Color.translate(message));
+    }
 }

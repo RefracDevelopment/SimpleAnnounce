@@ -3,22 +3,25 @@
 # https://discord.gg/jVnmm7QnQU
 
 # If you don't want a prefix leave this blank
-Prefix: "&b&lSIMPLEANNOUNCE >> &7"
-Interval: 3600 # IN SECONDS (3600 SECONDS = 1 HOUR)
+prefix: "&b&lSIMPLEANNOUNCE >> &7"
+interval: 3600 # IN SECONDS (3600 SECONDS = 1 HOUR)
 # This format is if you want to announce manually with /announce <message>
 # If this is disabled the command will have the Prefix instead
-Format:
-  ENABLED: true
-  LINES:
+format:
+  enabled: true
+  lines:
     - "&8&m-------------------------------------------------"
     - "&8{arrow} &b&lSIMPLEANNOUNCE"
     - ""
     - "&8{arrow} &7{message}&7"
     - ""
     - "&8&m-------------------------------------------------"
-Announcements:
-  TEST:
-    LINES:
+announcements:
+  test:
+    # Do you want only certain players to see this?
+    # Leave this blank if you want this to be a public announcement
+    permission: "simpleannounce.test"
+    lines:
       - "&8&m-------------------------------------------------"
       - "&8{arrow} &b&lSIMPLEANNOUNCE &8| &f&lHELLO!"
       - ""
@@ -29,20 +32,20 @@ Announcements:
       - "&8&m-------------------------------------------------"
 
 # You will need to restart your server for these changes to work
-Commands:
-  ANNOUNCE:
-    ENABLED: true
+commands:
+  announce:
+    enabled: true
     # Command without /
-    COMMAND: "announce"
-    PERMISSION: "simpleannounce.use"
-    # Command without /
-    # Leave blank if you don't want an alias
-    ALIAS: ""
-  RELOAD:
-    ENABLED: true
-    # Command without /
-    COMMAND: "announcereload"
-    PERMISSION: "simpleannounce.admin"
+    command: "announce"
+    permission: "simpleannounce.use"
     # Command without /
     # Leave blank if you don't want an alias
-    ALIAS: ""
+    alias: ""
+  reload:
+    enabled: true
+    # Command without /
+    command: "announcereload"
+    permission: "simpleannounce.admin"
+    # Command without /
+    # Leave blank if you don't want an alias
+    alias: ""

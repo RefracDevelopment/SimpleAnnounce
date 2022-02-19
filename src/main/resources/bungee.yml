@@ -1,5 +1,5 @@
 name: SimpleAnnounce
-version: '1.3-beta.1'
+version: '1.4'
 main: me.refrac.simpleannounce.bungee.BungeeAnnounce
 author: Refrac
 description: A Lightweight Announcer Plugin

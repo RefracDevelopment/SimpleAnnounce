@@ -6,7 +6,7 @@
 
     <groupId>me.refrac</groupId>
     <artifactId>SimpleAnnounce</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.4</version>
     <packaging>jar</packaging>
 
     <name>SimpleAnnounce</name>
@@ -16,9 +16,9 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://discord.gg/jVnmm7QnQU</url>
 
     <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

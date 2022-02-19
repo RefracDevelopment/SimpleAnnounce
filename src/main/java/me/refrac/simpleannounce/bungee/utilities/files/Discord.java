@@ -19,19 +19,20 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refrac.simpleannounce.spigot.command;
+package me.refrac.simpleannounce.bungee.utilities.files;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class Discord {
+    public static boolean DISCORD_ENABLED;
+    public static String DISCORD_WEBHOOK;
+    public static boolean DISCORD_EMBED;
+    public static String DISCORD_TITLE;
+    public static String DISCORD_FOOTER;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CommandInfo {
-    String name();
-    String description() default "No description has been set.";
-    String permission() default "";
-    boolean requiresPlayer();
-    boolean requiresDev() default false;
+    public static void loadDiscord() {
+        DISCORD_ENABLED = Files.getDiscord().getBoolean("Discord.ENABLED");
+        DISCORD_WEBHOOK = Files.getDiscord().getString("Discord.WEBHOOK");
+        DISCORD_EMBED = Files.getDiscord().getBoolean("Discord.EMBED-MESSAGE");
+        DISCORD_TITLE = Files.getDiscord().getString("Discord.TITLE");
+        DISCORD_FOOTER = Files.getDiscord().getString("Discord.FOOTER");
+    }
 }

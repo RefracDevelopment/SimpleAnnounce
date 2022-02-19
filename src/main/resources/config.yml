@@ -26,6 +26,9 @@ Format:
     - "&8&m-------------------------------------------------"
 Announcements:
   TEST:
+    # Do you want only certain players to see this?
+    # Leave this blank if you want this to be a public announcement
+    PERMISSION: "simpleannounce.test"
     # Do you want a sound to play?
     SOUND:
       ENABLED: false
