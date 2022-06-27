@@ -26,6 +26,7 @@ import me.refrac.simpleannounce.shared.*;
 import me.refrac.simpleannounce.spigot.command.commands.*;
 import me.refrac.simpleannounce.spigot.tasks.*;
 import me.refrac.simpleannounce.spigot.utilities.*;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -51,6 +52,8 @@ public final class SimpleAnnounce extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             Logger.INFO.out("Hooked into PlaceholderAPI.");
         }
+
+        new Metrics(this, 15595);
 
         Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
         Logger.NONE.out("&e" + Settings.getName + " has been enabled.");

@@ -29,6 +29,7 @@ import me.refrac.simpleannounce.bungee.utilities.files.Discord;
 import me.refrac.simpleannounce.shared.Settings;
 import me.refrac.simpleannounce.bungee.utilities.files.Files;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bstats.bungeecord.Metrics;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +50,8 @@ public final class BungeeAnnounce extends Plugin {
 
         loadCommands();
         loadListeners();
+
+        new Metrics(this, 15596);
 
         Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
         Logger.NONE.out("&e" + Settings.getName + " has been enabled.");
