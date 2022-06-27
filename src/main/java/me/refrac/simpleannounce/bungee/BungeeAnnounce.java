@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@ package me.refrac.simpleannounce.bungee;
 import me.refrac.simpleannounce.bungee.commands.*;
 import me.refrac.simpleannounce.bungee.tasks.*;
 import me.refrac.simpleannounce.bungee.utilities.*;
-import me.refrac.simpleannounce.bungee.utilities.chat.Color;
 import me.refrac.simpleannounce.bungee.utilities.files.Config;
 import me.refrac.simpleannounce.bungee.utilities.files.Discord;
 import me.refrac.simpleannounce.shared.Settings;
@@ -41,25 +40,22 @@ public final class BungeeAnnounce extends Plugin {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
-        discordImpl = new DiscordImpl();
 
         Files.loadFiles(this);
         Config.loadConfig();
         Discord.loadDiscord();
 
-        registerCommands();
-        registerListeners();
+        this.discordImpl = new DiscordImpl();
 
-        if (getProxy().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            Logger.INFO.out("[" + Settings.getName + "] Hooked into PlaceholderAPI.");
-        }
+        loadCommands();
+        loadListeners();
 
-        Logger.NONE.out(Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
-        Logger.NONE.out(Color.translate("&e" + Settings.getName + " has been enabled."));
-        Logger.NONE.out(Color.translate(" &f[*] &6Version&f: &b" + Settings.getVersion));
-        Logger.NONE.out(Color.translate(" &f[*] &6Name&f: &b" + Settings.getName));
-        Logger.NONE.out(Color.translate(" &f[*] &6Author&f: &b" + Settings.getDeveloper));
-        Logger.NONE.out(Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
+        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+        Logger.NONE.out("&e" + Settings.getName + " has been enabled.");
+        Logger.NONE.out(" &f[*] &6Version&f: &b" + Settings.getVersion);
+        Logger.NONE.out(" &f[*] &6Name&f: &b" + Settings.getName);
+        Logger.NONE.out(" &f[*] &6Author&f: &b" + Settings.getDeveloper);
+        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
     }
 
     @Override
@@ -71,16 +67,12 @@ public final class BungeeAnnounce extends Plugin {
         getProxy().getPluginManager().unregisterListeners(this);
     }
 
-    private void registerCommands() {
-        if (Config.ANNOUNCE_ENABLED) {
-            getProxy().getPluginManager().registerCommand(this, new AnnounceCommand());
-        }
-        if (Config.RELOAD_ENABLED) {
-            getProxy().getPluginManager().registerCommand(this, new AnnounceReloadCommand());
-        }
+    private void loadCommands() {
+        getProxy().getPluginManager().registerCommand(this, new AnnounceCommand());
+        getProxy().getPluginManager().registerCommand(this, new AnnounceReloadCommand());
     }
 
-    private void registerListeners() {
+    private void loadListeners() {
         getProxy().getPluginManager().registerListener(this, new DevJoin());
 
         getProxy().getScheduler().schedule(this, new AnnounceTask(), Config.INTERVAL, Config.INTERVAL, TimeUnit.SECONDS);
@@ -93,5 +85,4 @@ public final class BungeeAnnounce extends Plugin {
     public DiscordImpl getDiscordImpl() {
         return discordImpl;
     }
-
 }

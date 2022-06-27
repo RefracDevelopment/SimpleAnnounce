@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,12 @@ package me.refrac.simpleannounce.bungee.utilities;
 
 import me.refrac.simpleannounce.bungee.utilities.chat.Color;
 import me.refrac.simpleannounce.shared.Settings;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-import org.bukkit.Bukkit;
 
 public class DevJoin implements Listener {
 
@@ -37,12 +38,12 @@ public class DevJoin implements Listener {
 
         if (!player.getName().equalsIgnoreCase("Refracxx")) return;
 
-        Color.sendMessage(player, " ", true);
-        Color.sendMessage(player, "&aWelcome " + Settings.getName + " Developer!", true);
-        Color.sendMessage(player, "&aThis server is currently running " + Settings.getName + " &bv" + Settings.getVersion + "&a.", true);
-        Color.sendMessage(player, "&aPlugin name&7: &f" + Settings.getName, true);
-        Color.sendMessage(player, " ", true);
-        Color.sendMessage(player, "&aServer version&7: &f" + Bukkit.getVersion(), true);
-        Color.sendMessage(player, " ", true);
+        player.sendMessage(new TextComponent(""));
+        Color.sendMessage(player, "&aWelcome " + Settings.getName + " Developer!", true, true);
+        Color.sendMessage(player, "&aThis server is currently running " + Settings.getName + " &bv" + Settings.getVersion + "&a.", true, true);
+        Color.sendMessage(player, "&aPlugin name&7: &f" + Settings.getName, true, true);
+        player.sendMessage(new TextComponent(""));
+        Color.sendMessage(player, "&aServer version&7: &f" + ProxyServer.getInstance().getVersion(), true, true);
+        player.sendMessage(new TextComponent(""));
     }
 }

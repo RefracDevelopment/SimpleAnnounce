@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,85 +22,93 @@
 package me.refrac.simpleannounce.spigot.command.commands;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.refrac.simpleannounce.shared.Permissions;
 import me.refrac.simpleannounce.spigot.*;
 import me.refrac.simpleannounce.spigot.command.*;
 import me.refrac.simpleannounce.spigot.utilities.*;
+import me.refrac.simpleannounce.spigot.utilities.chat.Color;
 import me.refrac.simpleannounce.spigot.utilities.files.Config;
 import me.refrac.simpleannounce.spigot.utilities.files.Discord;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.awt.*;
 
 @CommandInfo(name = "announce", description = "Allows you to announce your messages manually", requiresPlayer = true)
 public class AnnounceCommand extends CommandFramework {
 
     @Override
-    public void execute(Player player, String[] args) {
-        if (args.length == 0) {
-            if (!player.hasPermission(Config.ANNOUNCE_PERMISSION)) {
-                player.sendMessage(me.refrac.simpleannounce.spigot.utilities.chat.Color.translate("&cYou don't have permission to execute this command."));
-                return;
+    public void execute(CommandSender sender, String[] args) {
+        if (Config.ANNOUNCE_ENABLED) {
+            if (args.length == 0) {
+                if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
+                    Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
+                    return;
+                }
+
+                if (Config.ANNOUNCE_OUTPUT.equalsIgnoreCase("custom") && Config.ANNOUNCE_MESSAGE != null) {
+                    for (String s : Config.ANNOUNCE_MESSAGE)
+                        Color.sendMessage(sender, s, true, true);
+                } else {
+                    Color.sendMessage(sender, "", false, false);
+                    Color.sendMessage(sender, "&b&lSimpleAnnounce %arrow_2% Help", true, true);
+                    Color.sendMessage(sender, "", false, false);
+                    Color.sendMessage(sender, "&b/announce <message> - Allows you to send announcements.", true, true);
+                    Color.sendMessage(sender, "&b/announcereload - Reloads the config files.", true, true);
+                    Color.sendMessage(sender, "", false, false);
+                }
             }
 
-            me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(player, "&b&lSimpleAnnounce &7by &bRefrac", true);
-            me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(player, "", false);
-            me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(player, "&b/announce <message> &7- Allows you to announce your messages manually.", true);
-            me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(player, "&b/announcereload &7- Reloads the Simple Announce plugin", true);
-        }
+            if (args.length >= 1) {
+                if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
+                    Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
+                    return;
+                }
 
-        if (args.length >= 1) {
-            if (!player.hasPermission(Config.ANNOUNCE_PERMISSION)) {
-                player.sendMessage(me.refrac.simpleannounce.spigot.utilities.chat.Color.translate("&cYou don't have permission to execute this command."));
-                return;
-            }
+                if (Config.FORMAT_ENABLED) {
+                    for (String format : Config.FORMAT_LINES) {
+                        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                            Bukkit.getOnlinePlayers().forEach(p -> Color.sendMessage(p,
+                                    PlaceholderAPI.setPlaceholders(p, format.replace("%message%", stringArrayToString(args))), true, true));
+                        } else Bukkit.getOnlinePlayers().forEach(p -> Color.sendMessage(p,
+                                    format.replace("%message%", stringArrayToString(args)), true, true));
+                    }
 
-            if (Config.FORMAT_ENABLED) {
-                for (String format : Config.FORMAT_LINES) {
-                    if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                        Bukkit.getOnlinePlayers().forEach(p -> me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(p,
-                                PlaceholderAPI.setPlaceholders(p, format.replace("{message}", stringArrayToString(args))), true, true));
-                    } else {
-                        Bukkit.getOnlinePlayers().forEach(p -> me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(p,
-                                format.replace("{message}", stringArrayToString(args)), true, true));
+                    if (Config.FORMAT_SOUND_ENABLED && Config.FORMAT_SOUND_NAME != null) {
+                        Bukkit.getOnlinePlayers().forEach(p -> {
+                            try {
+                                p.playSound(p.getLocation(), Sound.valueOf(Config.FORMAT_SOUND_NAME),
+                                        (float) Config.FORMAT_SOUND_VOLUME, (float) Config.FORMAT_SOUND_PITCH);
+                            } catch (Exception e) {
+                                if (p.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
+                                    Color.sendMessage(p, "&cSomething went wrong with the sound name. Check console for more information.", true, true);
+                                }
+                                Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+                                Logger.ERROR.out("SimpleAnnounce - Sound Error");
+                                Logger.NONE.out("");
+                                Logger.ERROR.out("The sound name '" + Config.FORMAT_SOUND_NAME + "' is invalid!");
+                                Logger.ERROR.out("Please make sure your sound name is correct.");
+                                Logger.NONE.out("");
+                                Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+                            }
+                        });
+                    }
+                } else {
+                    String format = Config.PREFIX + stringArrayToString(args);
+
+                    if (sender instanceof Player) {
+                        Player player = (Player) sender;
+
+                        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                            Bukkit.getOnlinePlayers().forEach(p -> Color.sendMessage(p, PlaceholderAPI.setPlaceholders(player, format), true, true));
+                        } else Bukkit.getOnlinePlayers().forEach(p -> Color.sendMessage(p, format, true, true));
                     }
                 }
 
-                if (Config.FORMAT_SOUND_ENABLED && Config.FORMAT_SOUND_NAME != null) {
-                    Bukkit.getOnlinePlayers().forEach(p -> {
-                        try {
-                            p.playSound(p.getLocation(), Sound.valueOf(Config.FORMAT_SOUND_NAME),
-                                    (float) Config.FORMAT_SOUND_VOLUME, (float) Config.FORMAT_SOUND_PITCH);
-                        } catch (Exception e) {
-                            if (p.hasPermission("simpleannounce.admin")) {
-                                me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(p, "&cSomething went wrong with the sound name. Check console for more information.", true);
-                            }
-                            Logger.NONE.out(me.refrac.simpleannounce.spigot.utilities.chat.Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
-                            Logger.ERROR.out("SimpleAnnounce - Sound Error");
-                            Logger.NONE.out("");
-                            Logger.ERROR.out("The sound name '" + Config.FORMAT_SOUND_NAME + "' is invalid!");
-                            Logger.ERROR.out("Please make sure your sound name is correct.");
-                            Logger.NONE.out("");
-                            Logger.NONE.out(me.refrac.simpleannounce.spigot.utilities.chat.Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
-                        }
-                    });
-                }
-            } else {
-                String format = Config.PREFIX + stringArrayToString(args);
-
-                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                    Bukkit.getOnlinePlayers().forEach(p -> me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(p, PlaceholderAPI.setPlaceholders(player, format), true, true));
-                } else {
-                    Bukkit.getOnlinePlayers().forEach(p -> me.refrac.simpleannounce.spigot.utilities.chat.Color.sendMessage(p, format, true, true));
-                }
+                if (Discord.DISCORD_EMBED) {
+                    SimpleAnnounce.getInstance().getDiscordImpl().sendEmbed(stringArrayToString(args).replace("%arrow%", "»"), java.awt.Color.CYAN);
+                } else SimpleAnnounce.getInstance().getDiscordImpl().sendMessage(stringArrayToString(args).replace("%arrow%", "»"));
             }
-
-            if (Discord.DISCORD_EMBED) {
-                SimpleAnnounce.getInstance().getDiscordImpl().sendEmbed(stringArrayToString(args).replace("{arrow}", "»"), Color.CYAN);
-            } else
-                SimpleAnnounce.getInstance().getDiscordImpl().sendMessage(stringArrayToString(args).replace("{arrow}", "»"));
         }
     }
 

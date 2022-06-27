@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,19 @@
 package me.refrac.simpleannounce.bungee.utilities.chat;
 
 import me.refrac.simpleannounce.bungee.utilities.files.Config;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Placeholders {
 
-    public static String setPlaceholders(ProxiedPlayer player, String placeholder) {
+    public static String setPlaceholders(CommandSender sender, String placeholder) {
         placeholder = placeholder.replace("%prefix%", Config.PREFIX);
-        placeholder = placeholder.replace("%player%", player.getName());
-        placeholder = placeholder.replace("%displayname%", player.getDisplayName());
-        placeholder = placeholder.replace("%arrow%", "\u00BB");
-        placeholder = placeholder.replace("%arrow_2%", "\u27A5");
-        placeholder = placeholder.replace("%star%", "\u2726");
-        placeholder = placeholder.replace("%circle%", "\u2219");
-        placeholder = placeholder.replace("|", "\u2503");
+        if (sender instanceof ProxiedPlayer) {
+            ProxiedPlayer player = (ProxiedPlayer) sender;
 
-        return placeholder;
-    }
-
-    public static String setConsolePlaceholders(String placeholder) {
-        placeholder = placeholder.replace("%prefix%", Config.PREFIX);
-        placeholder = placeholder.replace("%player%", "Console");
-        placeholder = placeholder.replace("%displayname%", "Console");
+            placeholder = placeholder.replace("%player%", player.getName());
+            placeholder = placeholder.replace("%displayname%", player.getDisplayName());
+        }
         placeholder = placeholder.replace("%arrow%", "\u00BB");
         placeholder = placeholder.replace("%arrow_2%", "\u27A5");
         placeholder = placeholder.replace("%star%", "\u2726");

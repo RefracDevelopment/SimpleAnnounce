@@ -1,6 +1,6 @@
-name: SimpleAnnounce
-version: '1.4'
+name: 'SimpleAnnounce'
+version: '${project.version}'
 main: me.refrac.simpleannounce.bungee.BungeeAnnounce
-author: Refrac
-description: A Lightweight Announcer Plugin
-website: https://discord.gg/jVnmm7QnQU
+author: 'Refrac'
+description: 'A Lightweight Announcer Plugin'
+website: 'https://discord.gg/EFeSKPg739'

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,25 +25,31 @@ import me.refrac.simpleannounce.bungee.*;
 import me.refrac.simpleannounce.bungee.tasks.*;
 import me.refrac.simpleannounce.bungee.utilities.chat.*;
 import me.refrac.simpleannounce.bungee.utilities.files.*;
+import me.refrac.simpleannounce.shared.Permissions;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.util.concurrent.TimeUnit;
-
 public class AnnounceReloadCommand extends Command {
 
     public AnnounceReloadCommand() {
-        super(Config.ANNOUNCE_COMAND, Config.ANNOUNCE_PERMISSION, Config.ANNOUNCE_ALIAS);
+        super(Config.RELOAD_COMAND, "", Config.RELOAD_ALIAS);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (!Config.RELOAD_ENABLED) return;
+
+        if (!sender.hasPermission(Permissions.ANNOUNCE_RELOAD)) {
+            Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
+            return;
+        }
+
         Files.loadFiles(BungeeAnnounce.getInstance());
         Config.loadConfig();
         Discord.loadDiscord();
         ProxyServer.getInstance().getScheduler().cancel(BungeeAnnounce.getInstance());
-        ProxyServer.getInstance().getScheduler().schedule(BungeeAnnounce.getInstance(), new AnnounceTask(), Config.INTERVAL, Config.INTERVAL, TimeUnit.SECONDS);
-        Color.sendMessage(sender, "&7Config files reloaded. Changes should be live in-game!", true);
+        new AnnounceTask().run();
+        Color.sendMessage(sender, Config.RELOAD, true, true);
     }
 }

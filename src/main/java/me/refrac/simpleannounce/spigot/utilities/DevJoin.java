@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,12 +37,12 @@ public class DevJoin implements Listener {
 
         if (!player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID)) return;
 
-        Color.sendMessage(player, " ", true);
-        Color.sendMessage(player, "&aWelcome " + Settings.getName + " Developer!", true);
-        Color.sendMessage(player, "&aThis server is currently running " + Settings.getName + " &bv" + Settings.getVersion + "&a.", true);
-        Color.sendMessage(player, "&aPlugin name&7: &f" + Settings.getName, true);
-        Color.sendMessage(player, " ", true);
-        Color.sendMessage(player, "&aServer version&7: &f" + Bukkit.getVersion(), true);
-        Color.sendMessage(player, " ", true);
+        player.sendMessage("");
+        Color.sendMessage(player, "&aWelcome " + Settings.getName + " Developer!", true, true);
+        Color.sendMessage(player, "&aThis server is currently running " + Settings.getName + " &bv" + Settings.getVersion + "&a.", true, true);
+        Color.sendMessage(player, "&aPlugin name&7: &f" + Settings.getName, true, true);
+        player.sendMessage("");
+        Color.sendMessage(player, "&aServer version&7: &f" + Bukkit.getVersion(), true, true);
+        player.sendMessage("");
     }
 }

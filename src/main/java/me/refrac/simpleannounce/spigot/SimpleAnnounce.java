@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,9 @@ import me.refrac.simpleannounce.shared.*;
 import me.refrac.simpleannounce.spigot.command.commands.*;
 import me.refrac.simpleannounce.spigot.tasks.*;
 import me.refrac.simpleannounce.spigot.utilities.*;
-import me.refrac.simpleannounce.spigot.utilities.chat.*;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 public final class SimpleAnnounce extends JavaPlugin {
     private static SimpleAnnounce instance;
@@ -37,25 +38,26 @@ public final class SimpleAnnounce extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
-        discordImpl = new DiscordImpl();
 
         Files.loadFiles(this);
         Config.loadConfig();
         Discord.loadDiscord();
 
-        registerCommands();
-        registerListeners();
+        this.discordImpl = new DiscordImpl();
+
+        loadCommands();
+        loadListeners();
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            Logger.INFO.out("[" + Settings.getName + "] Hooked into PlaceholderAPI.");
+            Logger.INFO.out("Hooked into PlaceholderAPI.");
         }
 
-        Logger.NONE.out(Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
-        Logger.NONE.out(Color.translate("&e" + Settings.getName + " has been enabled."));
-        Logger.NONE.out(Color.translate(" &f[*] &6Version&f: &b" + Settings.getVersion));
-        Logger.NONE.out(Color.translate(" &f[*] &6Name&f: &b" + Settings.getName));
-        Logger.NONE.out(Color.translate(" &f[*] &6Author&f: &b" + Settings.getDeveloper));
-        Logger.NONE.out(Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
+        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+        Logger.NONE.out("&e" + Settings.getName + " has been enabled.");
+        Logger.NONE.out(" &f[*] &6Version&f: &b" + Settings.getVersion);
+        Logger.NONE.out(" &f[*] &6Name&f: &b" + Settings.getName);
+        Logger.NONE.out(" &f[*] &6Author&f: &b" + Settings.getDeveloper);
+        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
     }
 
     @Override
@@ -65,16 +67,12 @@ public final class SimpleAnnounce extends JavaPlugin {
         getServer().getScheduler().cancelTasks(this);
     }
 
-    private void registerCommands() {
-        if (getConfig().getBoolean("Commands.ANNOUNCE.ENABLED")) {
-            getCommand("announce").setExecutor(new AnnounceCommand());
-        }
-        if (getConfig().getBoolean("Commands.RELOAD.ENABLED")) {
-            getCommand("announcereload").setExecutor(new AnnounceReloadCommand());
-        }
+    private void loadCommands() {
+        Objects.requireNonNull(getCommand("announce")).setExecutor(new AnnounceCommand());
+        Objects.requireNonNull(getCommand("announcereload")).setExecutor(new AnnounceReloadCommand());
     }
 
-    private void registerListeners() {
+    private void loadListeners() {
         getServer().getPluginManager().registerEvents(new DevJoin(), this);
 
         getServer().getScheduler().runTaskTimer(this, new AnnounceTask(), Config.INTERVAL*20L, Config.INTERVAL*20L);
@@ -87,5 +85,4 @@ public final class SimpleAnnounce extends JavaPlugin {
     public DiscordImpl getDiscordImpl() {
         return discordImpl;
     }
-
 }

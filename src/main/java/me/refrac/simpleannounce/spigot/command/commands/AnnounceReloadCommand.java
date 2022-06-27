@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,10 @@
  */
 package me.refrac.simpleannounce.spigot.command.commands;
 
+import me.refrac.simpleannounce.shared.Permissions;
 import me.refrac.simpleannounce.spigot.*;
 import me.refrac.simpleannounce.spigot.command.*;
-import me.refrac.simpleannounce.spigot.tasks.*;
+import me.refrac.simpleannounce.spigot.tasks.AnnounceTask;
 import me.refrac.simpleannounce.spigot.utilities.chat.Color;
 import me.refrac.simpleannounce.spigot.utilities.files.Config;
 import me.refrac.simpleannounce.spigot.utilities.files.Discord;
@@ -36,16 +37,18 @@ public class AnnounceReloadCommand extends CommandFramework {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (!sender.hasPermission(Config.RELOAD_PERMISSION)) {
-            Color.sendMessage(sender, "&cYou don't have permission to execute this command.", true);
-            return;
-        }
+        if (Config.RELOAD_ENABLED) {
+            if (!sender.hasPermission(Permissions.ANNOUNCE_RELOAD)) {
+                Color.sendMessage(sender, Config.RELOAD, true, true);
+                return;
+            }
 
-        Files.reloadFiles(SimpleAnnounce.getInstance());
-        Config.loadConfig();
-        Discord.loadDiscord();
-        Bukkit.getServer().getScheduler().cancelTasks(SimpleAnnounce.getInstance());
-        Bukkit.getServer().getScheduler().runTaskTimer(SimpleAnnounce.getInstance(), new AnnounceTask(), Config.INTERVAL, Config.INTERVAL*20L);
-        Color.sendMessage(sender, "&7Config files reloaded. Changes should be live in-game!", true);
+            Files.reloadFiles(SimpleAnnounce.getInstance());
+            Config.loadConfig();
+            Discord.loadDiscord();
+            Bukkit.getServer().getScheduler().cancelTasks(SimpleAnnounce.getInstance());
+            new AnnounceTask().run();
+            Color.sendMessage(sender, Config.RELOAD, true, true);
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,46 +21,60 @@
  */
 package me.refrac.simpleannounce.bungee.utilities.files;
 
-import me.refrac.simpleannounce.spigot.utilities.files.Files;
+import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
 
 public class Config {
     // General
-    public static String PREFIX;
     public static int INTERVAL;
+
+    // Messages
+    public static String PREFIX;
+    public static String NO_PERMISSION;
+    public static String RELOAD;
+    public static String ANNOUNCE_OUTPUT;
+    public static List<String> ANNOUNCE_MESSAGE;
 
     // Format
     public static boolean FORMAT_ENABLED;
     public static List<String> FORMAT_LINES;
 
+    // Announcements
+    public static Configuration ANNOUNCEMENTS;
+
     // Commands
     public static boolean ANNOUNCE_ENABLED;
-    public static String ANNOUNCE_COMAND;
-    public static String ANNOUNCE_PERMISSION;
+    public static String ANNOUNCE_COMMAND;
     public static String ANNOUNCE_ALIAS;
     public static boolean RELOAD_ENABLED;
     public static String RELOAD_COMAND;
-    public static String RELOAD_PERMISSION;
     public static String RELOAD_ALIAS;
 
     public static void loadConfig() {
         // General
-        PREFIX = Files.getConfig().getString("Prefix");
-        INTERVAL = Files.getConfig().getInt("Interval");
+        INTERVAL = Files.getConfig().getInt("interval");
+
+        // Messages
+        PREFIX = Files.getConfig().getString("messages.prefix");
+        NO_PERMISSION = Files.getConfig().getString("messages.no-permission");
+        RELOAD = Files.getConfig().getString("messages.reload");
+        ANNOUNCE_OUTPUT = Files.getConfig().getString("messages.announce-output");
+        ANNOUNCE_MESSAGE = Files.getConfig().getStringList("messages.announce-message");
 
         // Format
-        FORMAT_ENABLED = Files.getConfig().getBoolean("Format.ENABLED");
-        FORMAT_LINES = Files.getConfig().getStringList("Format.LINES");
+        FORMAT_ENABLED = Files.getConfig().getBoolean("format.enabled");
+        FORMAT_LINES = Files.getConfig().getStringList("format.lines");
+
+        // Announcements
+        ANNOUNCEMENTS = Files.getConfig().getSection("announcements");
 
         // Commands
-        ANNOUNCE_ENABLED = Files.getConfig().getBoolean("Commands.ANNOUNCE.ENABLED");
-        ANNOUNCE_COMAND = Files.getConfig().getString("Commands.ANNOUNCE.COMMAND");
-        ANNOUNCE_PERMISSION = Files.getConfig().getString("Commands.ANNOUNCE.PERMISSION");
-        ANNOUNCE_ALIAS = Files.getConfig().getString("Commands.ANNOUNCE.ALIAS");
-        RELOAD_ENABLED = Files.getConfig().getBoolean("Commands.RELOAD.ENABLED");
-        RELOAD_COMAND = Files.getConfig().getString("Commands.RELOAD.COMMAND");
-        RELOAD_PERMISSION = Files.getConfig().getString("Commands.RELOAD.PERMISSION");
-        RELOAD_ALIAS = Files.getConfig().getString("Commands.RELOAD.ALIAS");
+        ANNOUNCE_ENABLED = Files.getConfig().getBoolean("commands.announce.enabled");
+        ANNOUNCE_COMMAND = Files.getConfig().getString("commands.announce.command");
+        ANNOUNCE_ALIAS = Files.getConfig().getString("commands.announce.alias");
+        RELOAD_ENABLED = Files.getConfig().getBoolean("commands.reload.enabled");
+        RELOAD_COMAND = Files.getConfig().getString("commands.reload.command");
+        RELOAD_ALIAS = Files.getConfig().getString("commands.reload.alias");
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@ package me.refrac.simpleannounce.bungee.utilities.files;
 
 import com.google.common.io.ByteStreams;
 import me.refrac.simpleannounce.bungee.BungeeAnnounce;
+import me.refrac.simpleannounce.bungee.utilities.Logger;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -33,22 +34,6 @@ import java.io.*;
 public class Files {
     private static Configuration config;
     private static Configuration discord;
-
-    public static void loadFiles(BungeeAnnounce announce) {
-        try {
-            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
-                    loadResource(announce, "bungee-config.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            discord = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
-                    loadResource(announce, "discord.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private static File loadResource(Plugin plugin, String resource) {
         File folder = plugin.getDataFolder();
@@ -75,5 +60,25 @@ public class Files {
 
     public static Configuration getDiscord() {
         return discord;
+    }
+
+    public static void loadFiles(BungeeAnnounce announce) {
+        try {
+            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
+                    loadResource(announce, "bungee-config.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            discord = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
+                    loadResource(announce, "discord.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Logger.NONE.out("&c==========================================");
+        Logger.NONE.out("&aAll files have been loaded correctly!");
+        Logger.NONE.out("&c==========================================");
     }
 }

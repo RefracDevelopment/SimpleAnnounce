@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,18 @@ package me.refrac.simpleannounce.bungee.tasks;
 import me.refrac.simpleannounce.bungee.*;
 import me.refrac.simpleannounce.bungee.utilities.*;
 import me.refrac.simpleannounce.bungee.utilities.chat.Color;
-import me.refrac.simpleannounce.bungee.utilities.files.Files;
+import me.refrac.simpleannounce.bungee.utilities.files.Config;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AnnounceTask implements Runnable {
 
-    @Override
     public void run() {
-        Set<String> broadcastList = (Set<String>) Files.getConfig().getSection("Announcements").getKeys();
+        Set<String> broadcastList = (Set<String>) Config.ANNOUNCEMENTS.getKeys();
 
         if (broadcastList.isEmpty()) {
             Logger.WARNING.out("[SimpleAnnounce] There are no announcements :(");
@@ -46,11 +44,11 @@ public class AnnounceTask implements Runnable {
         }
 
         String broadcastId = getRandom(broadcastList);
-        Configuration broadcast = Files.getConfig().getSection("Announcements." + broadcastId);
+        Configuration broadcast = Config.ANNOUNCEMENTS.getSection(broadcastId);
 
-        for (String message : broadcast.getStringList("LINES")) {
+        for (String message : broadcast.getStringList("lines")) {
             ProxyServer.getInstance().getPlayers().forEach(p -> {
-                if (!p.hasPermission(broadcast.getString("PERMISSION"))) return;
+                if (!p.hasPermission(broadcast.getString("permission")) && !broadcast.getString("permission").equalsIgnoreCase("none")) return;
 
                 Color.sendMessage(p, message, true, true);
             });
@@ -58,7 +56,7 @@ public class AnnounceTask implements Runnable {
     }
 
     private static String getRandom(Set<String> set) {
-        int index = (new Random()).nextInt(set.size());
+        int index = ThreadLocalRandom.current().nextInt(set.size());
         Iterator<String> iterator = set.iterator();
         for (int i = 0; i < index; i++) {
             iterator.next();

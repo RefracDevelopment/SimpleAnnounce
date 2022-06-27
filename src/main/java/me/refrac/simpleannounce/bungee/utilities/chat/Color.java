@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,17 +38,10 @@ public class Color {
         return ChatColor.translateAlternateColorCodes('&', source);
     }
 
-    public static void sendMessage(ProxiedPlayer player, String source, boolean color, boolean placeholders) {
+    public static void sendMessage(CommandSender sender, String source, boolean color, boolean placeholders) {
         if (source.equalsIgnoreCase("%empty%") || source.contains("%empty%")) return;
-        if (placeholders) source = Placeholders.setPlaceholders(player, source);
+        if (placeholders) source = Placeholders.setPlaceholders(sender, source);
 
-        if (color) source = translate(source);
-
-        player.sendMessage(new TextComponent(source));
-    }
-
-    public static void sendMessage(CommandSender sender, String source, boolean color) {
-        if (source.equalsIgnoreCase("%empty%") || source.contains("%empty%")) return;
         if (color) source = translate(source);
 
         sender.sendMessage(new TextComponent(source));

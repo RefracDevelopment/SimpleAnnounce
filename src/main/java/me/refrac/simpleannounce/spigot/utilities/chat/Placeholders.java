@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,27 +24,19 @@ package me.refrac.simpleannounce.spigot.utilities.chat;
 import me.refrac.simpleannounce.spigot.utilities.files.Config;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Placeholders {
 
-    public static String setPlaceholders(Player player, String placeholder) {
+    public static String setPlaceholders(CommandSender sender, String placeholder) {
         placeholder = placeholder.replace("%prefix%", Config.PREFIX);
-        placeholder = placeholder.replace("%player%", player.getName());
-        placeholder = placeholder.replace("%displayname%", player.getDisplayName());
-        placeholder = placeholder.replace("%arrow%", StringEscapeUtils.unescapeJava("\u00BB"));
-        placeholder = placeholder.replace("%arrow_2%", StringEscapeUtils.unescapeJava("\u27A5"));
-        placeholder = placeholder.replace("%star%", StringEscapeUtils.unescapeJava("\u2726"));
-        placeholder = placeholder.replace("%circle%", StringEscapeUtils.unescapeJava("\u2219"));
-        placeholder = placeholder.replace("|", StringEscapeUtils.unescapeJava("\u2503"));
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
 
-        return placeholder;
-    }
-
-    public static String setConsolePlaceholders(String placeholder) {
-        placeholder = placeholder.replace("%prefix%", Config.PREFIX);
-        placeholder = placeholder.replace("%player%", "Console");
-        placeholder = placeholder.replace("%displayname%", "Console");
+            placeholder = placeholder.replace("%player%", player.getName());
+            placeholder = placeholder.replace("%displayname%", player.getDisplayName());
+        }
         placeholder = placeholder.replace("%arrow%", StringEscapeUtils.unescapeJava("\u00BB"));
         placeholder = placeholder.replace("%arrow_2%", StringEscapeUtils.unescapeJava("\u27A5"));
         placeholder = placeholder.replace("%star%", StringEscapeUtils.unescapeJava("\u2726"));

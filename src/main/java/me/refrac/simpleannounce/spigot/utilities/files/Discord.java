@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,10 @@ public class Discord {
     public static String DISCORD_FOOTER;
 
     public static void loadDiscord() {
-        DISCORD_ENABLED = Files.getDiscord().getBoolean("Discord.ENABLED");
-        DISCORD_WEBHOOK = Files.getDiscord().getString("Discord.WEBHOOK");
-        DISCORD_EMBED = Files.getDiscord().getBoolean("Discord.EMBED-MESSAGE");
-        DISCORD_TITLE = Files.getDiscord().getString("Discord.TITLE");
-        DISCORD_FOOTER = Files.getDiscord().getString("Discord.FOOTER");
+        DISCORD_ENABLED = Files.getDiscord().getBoolean("discord.enabled");
+        DISCORD_WEBHOOK = Files.getDiscord().getString("discord.webhook");
+        DISCORD_EMBED = Files.getDiscord().getBoolean("discord.embed-message");
+        DISCORD_TITLE = Files.getDiscord().getString("discord.title");
+        DISCORD_FOOTER = Files.getDiscord().getString("discord.footer");
     }
 }

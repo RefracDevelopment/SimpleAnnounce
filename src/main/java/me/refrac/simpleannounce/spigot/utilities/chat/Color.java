@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2021 RefracDevelopment
+ * Copyright (c) 2022 RefracDevelopment
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
  */
 package me.refrac.simpleannounce.spigot.utilities.chat;
 
+import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,30 +33,33 @@ public class Color {
     public static String translate(Player player, String source) {
         source = Placeholders.setPlaceholders(player, source);
 
+        source = IridiumColorAPI.process(source);
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             return PlaceholderAPI.setPlaceholders(player, Color.translate(source));
         } else return Color.translate(source);
     }
 
     public static String translate(String source) {
+        source = IridiumColorAPI.process(source);
+
         return ChatColor.translateAlternateColorCodes('&', source);
     }
 
-    public static void sendMessage(Player player, String source, boolean color, boolean placeholders) {
+    public static void sendMessage(CommandSender sender, String source, boolean color, boolean placeholders) {
         if (source.equalsIgnoreCase("%empty%") || source.contains("%empty%")) return;
-        if (placeholders) source = Placeholders.setPlaceholders(player, source);
+        if (placeholders) source = Placeholders.setPlaceholders(sender, source);
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            source = PlaceholderAPI.setPlaceholders(player, source);
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                source = PlaceholderAPI.setPlaceholders(player, source);
+            }
         }
 
-        if (color) source = translate(source);
+        source = IridiumColorAPI.process(source);
 
-        player.sendMessage(source);
-    }
-
-    public static void sendMessage(CommandSender sender, String source, boolean color) {
-        if (source.equalsIgnoreCase("%empty%") || source.contains("%empty%")) return;
         if (color) source = translate(source);
 
         sender.sendMessage(source);

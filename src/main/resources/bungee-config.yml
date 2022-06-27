@@ -1,34 +1,59 @@
 # SimpleAnnounce by Refrac
 # If you have suggestions put them in my discord:
-# https://discord.gg/jVnmm7QnQU
+# https://discord.gg/EFeSKPg739
+#--------------------------------------
+# Placeholders:
+# %player% - Get the player name
+# %displayname% - Get the player display name
+# %message% - Get the message
+# %arrow% - Get an arrow for a message
+# %arrow_2% - Get alt arrow for a message
+# %star% - Get a star for a message
+# %circle% - Get a circle for a message
+# %empty% - Disable any message with this placeholder
+#--------------------------------------
+# Set all announcements interval in seconds
+interval: 300 # 300 = 5 minutes
 
-# If you don't want a prefix leave this blank
-prefix: "&b&lSIMPLEANNOUNCE >> &7"
-interval: 3600 # IN SECONDS (3600 SECONDS = 1 HOUR)
+messages:
+  # If you don't want a prefix leave this blank
+  prefix: "&b&lSIMPLEANNOUNCE >> &7"
+  no-permission: "&cYou don't have permission to execute this command."
+  reload: "&7Config files reloaded. Changes should be live in-game!"
+  # If this is set to "custom" you can change the /announce output message to anything
+  announce-output: "default"
+  # announce-output must be set to "custom" in order for this to work
+  announce-message:
+    - ""
+    - "&b&lSimpleAnnounce %arrow_2% Help"
+    - "&b/announce <message> - Allows you to send announcements."
+    - "&b/announcereload - Reloads the config files."
+    - ""
+
 # This format is if you want to announce manually with /announce <message>
-# If this is disabled the command will have the Prefix instead
+# If this is disabled the command will have the messages prefix instead
 format:
   enabled: true
   lines:
     - "&8&m-------------------------------------------------"
-    - "&8{arrow} &b&lSIMPLEANNOUNCE"
+    - "&8%arrow% &b&lSIMPLEANNOUNCE"
     - ""
-    - "&8{arrow} &7{message}&7"
+    - "&8%arrow% &7{message}&7"
     - ""
     - "&8&m-------------------------------------------------"
 announcements:
   test:
     # Do you want only certain players to see this?
-    # Leave this blank if you want this to be a public announcement
+    # Set this to "none" if you want this to be a public announcement
     permission: "simpleannounce.test"
     lines:
       - "&8&m-------------------------------------------------"
-      - "&8{arrow} &b&lSIMPLEANNOUNCE &8| &f&lHELLO!"
+      - "&8%arrow% &b&lSIMPLEANNOUNCE &8| &f&lHELLO!"
       - ""
-      - "&8{arrow} &7Thank you for downloading SimpleAnnounce!"
-      - "&8{arrow} &7This is the default config, edit it to your liking!"
+      - "&8%arrow% &7Thank you for downloading SimpleAnnounce!"
+      - "&8%arrow% &7This is the default config, edit it to your liking!"
       - ""
-      - "&8{arrow} &7You can visit our discord @ &b&ndiscord.gg/jVnmm7QnQU"
+      - "&8%arrow% &7You can visit our discord @ &b&ndiscord.gg/EFeSKPg739"
       - "&8&m-------------------------------------------------"
 
 # You will need to restart your server for these changes to work
@@ -37,7 +62,6 @@ commands:
     enabled: true
     # Command without /
     command: "announce"
-    permission: "simpleannounce.use"
     # Command without /
     # Leave blank if you don't want an alias
     alias: ""
@@ -45,7 +69,6 @@ commands:
     enabled: true
     # Command without /
     command: "announcereload"
-    permission: "simpleannounce.admin"
     # Command without /
     # Leave blank if you don't want an alias
     alias: ""
