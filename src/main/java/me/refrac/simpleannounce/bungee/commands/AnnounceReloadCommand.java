@@ -30,6 +30,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Command;
 
+import java.util.concurrent.TimeUnit;
+
 public class AnnounceReloadCommand extends Command {
 
     public AnnounceReloadCommand() {
@@ -49,7 +51,7 @@ public class AnnounceReloadCommand extends Command {
         Config.loadConfig();
         Discord.loadDiscord();
         ProxyServer.getInstance().getScheduler().cancel(BungeeAnnounce.getInstance());
-        new AnnounceTask().run();
+        ProxyServer.getInstance().getScheduler().schedule(BungeeAnnounce.getInstance(), new AnnounceTask(), Config.INTERVAL, Config.INTERVAL, TimeUnit.SECONDS);
         Color.sendMessage(sender, Config.RELOAD, true, true);
     }
 }

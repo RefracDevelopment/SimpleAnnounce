@@ -47,7 +47,7 @@ public class AnnounceReloadCommand extends CommandFramework {
             Config.loadConfig();
             Discord.loadDiscord();
             Bukkit.getServer().getScheduler().cancelTasks(SimpleAnnounce.getInstance());
-            new AnnounceTask().run();
+            Bukkit.getServer().getScheduler().runTaskTimer(SimpleAnnounce.getInstance(), new AnnounceTask(), Config.INTERVAL*20L, Config.INTERVAL*20L);
             Color.sendMessage(sender, Config.RELOAD, true, true);
         }
     }
