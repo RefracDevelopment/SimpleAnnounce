@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.refrac</groupId>
+    <groupId>me.refracdevelopment</groupId>
     <artifactId>SimpleAnnounce</artifactId>
-    <version>1.4</version>
+    <version>1.4.1</version>
     <packaging>jar</packaging>
 
     <name>SimpleAnnounce</name>
@@ -44,11 +44,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>me.refrac.simpleannounce.spigot</shadedPattern>
+                                    <shadedPattern>me.refracdevelopment.simpleannounce.spigot</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>me.refrac.simpleannounce.bungee</shadedPattern>
+                                    <shadedPattern>me.refracdevelopment.simpleannounce.bungee</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

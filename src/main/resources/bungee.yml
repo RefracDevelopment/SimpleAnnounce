@@ -1,6 +1,8 @@
 name: 'SimpleAnnounce'
 version: '${project.version}'
-main: me.refrac.simpleannounce.bungee.BungeeAnnounce
-author: 'Refrac'
+main: me.refracdevelopment.simpleannounce.bungee.BungeeAnnounce
+authors:
+  - 'RefracDevelopment'
+  - 'Refrac'
 description: 'A Lightweight Announcer Plugin'
 website: 'https://discord.gg/EFeSKPg739'
