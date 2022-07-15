@@ -1,7 +1,7 @@
 # SimpleAnnounce
 A Simple Plugin To Keep Your Players Updated
 
-If you have any suggestions feel free to let me know on [Discord](https://discord.gg/jVnmm7QnQU).
+If you have any suggestions feel free to let me know on [Discord](https://discord.gg/EFeSKPg739).
 
 ## Normal Installation
 
