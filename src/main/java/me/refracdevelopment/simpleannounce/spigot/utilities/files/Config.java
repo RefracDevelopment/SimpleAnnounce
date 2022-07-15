@@ -45,13 +45,11 @@ public class Config {
     public static List<String> FORMAT_LINES;
 
     // Announcements
-    public static ConfigurationSection ANNOUNCMENTS;
+    public static ConfigurationSection ANNOUNCEMENTS;
 
     // Commands
     public static boolean ANNOUNCE_ENABLED;
-    public static String ANNOUNCE_PERMISSION;
     public static boolean RELOAD_ENABLED;
-    public static String RELOAD_PERMISSION;
 
     public static void loadConfig() {
         // General
@@ -73,12 +71,10 @@ public class Config {
         FORMAT_LINES = Files.getConfig().getStringList("format.lines");
 
         // Announcements
-        ANNOUNCMENTS = Files.getConfig().getConfigurationSection("announcements");
+        ANNOUNCEMENTS = Files.getConfig().getConfigurationSection("announcements");
 
         // Commands
         ANNOUNCE_ENABLED = Files.getConfig().getBoolean("commands.announce.enabled");
-        ANNOUNCE_PERMISSION = Files.getConfig().getString("Commands.ANNOUNCE.PERMISSION");
-        RELOAD_ENABLED = Files.getConfig().getBoolean("Commands.RELOAD.ENABLED");
-        RELOAD_PERMISSION = Files.getConfig().getString("Commands.RELOAD.PERMISSION");
+        RELOAD_ENABLED = Files.getConfig().getBoolean("commands.reload.enabled");
     }
 }

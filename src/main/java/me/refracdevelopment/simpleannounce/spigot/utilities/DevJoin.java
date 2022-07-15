@@ -35,8 +35,14 @@ public class DevJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID)) return;
+        if (player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID)) {
+            sendDevMessage(player);
+        } else if (player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID2)) {
+            sendDevMessage(player);
+        }
+    }
 
+    private void sendDevMessage(Player player) {
         player.sendMessage("");
         Color.sendMessage(player, "&aWelcome " + Settings.getName + " Developer!", true, true);
         Color.sendMessage(player, "&aThis server is currently running " + Settings.getName + " &bv" + Settings.getVersion + "&a.", true, true);

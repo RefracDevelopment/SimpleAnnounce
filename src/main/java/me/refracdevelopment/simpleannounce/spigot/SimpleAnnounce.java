@@ -22,8 +22,8 @@
 package me.refracdevelopment.simpleannounce.spigot;
 
 import me.refracdevelopment.simpleannounce.shared.Settings;
-import me.refracdevelopment.simpleannounce.spigot.command.commands.AnnounceCommand;
-import me.refracdevelopment.simpleannounce.spigot.command.commands.AnnounceReloadCommand;
+import me.refracdevelopment.simpleannounce.spigot.commands.AnnounceCommand;
+import me.refracdevelopment.simpleannounce.spigot.commands.AnnounceReloadCommand;
 import me.refracdevelopment.simpleannounce.spigot.tasks.AnnounceTask;
 import me.refracdevelopment.simpleannounce.spigot.utilities.DevJoin;
 import me.refracdevelopment.simpleannounce.spigot.utilities.DiscordImpl;

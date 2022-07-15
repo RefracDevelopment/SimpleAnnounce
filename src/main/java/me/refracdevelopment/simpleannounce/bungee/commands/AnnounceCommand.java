@@ -27,6 +27,7 @@ import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Discord;
 import me.refracdevelopment.simpleannounce.shared.Permissions;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 public class AnnounceCommand extends Command {
@@ -67,7 +68,8 @@ public class AnnounceCommand extends Command {
 
             if (Config.FORMAT_ENABLED) {
                 for (String format : Config.FORMAT_LINES) {
-                    plugin.getProxy().getPlayers().forEach(p -> Color.sendMessage(p, format.replace("{message}", stringArrayToString(args)), true, true));
+                    for (ProxiedPlayer p : plugin.getProxy().getPlayers())
+                        Color.sendMessage(p, format.replace("{message}", stringArrayToString(args)), true, true);
                 }
             } else {
                 plugin.getProxy().getPlayers().forEach(p -> Color.sendMessage(p, Config.PREFIX + stringArrayToString(args), true, true));

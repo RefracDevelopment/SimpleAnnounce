@@ -29,20 +29,21 @@ import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AnnounceTask implements Runnable {
 
-    private SimpleAnnounce plugin;
+    private final SimpleAnnounce plugin;
 
     public AnnounceTask(SimpleAnnounce plugin) {
         this.plugin = plugin;
     }
 
     public void run() {
-        Set<String> broadcastList = Config.ANNOUNCMENTS.getKeys(false);
+        Set<String> broadcastList = Config.ANNOUNCEMENTS.getKeys(false);
 
         if (broadcastList.isEmpty()) {
             Logger.WARNING.out("[SimpleAnnounce] There are no announcements :(");
@@ -51,22 +52,22 @@ public class AnnounceTask implements Runnable {
         }
 
         String broadcastId = getRandom(broadcastList);
-        ConfigurationSection broadcast = Config.ANNOUNCMENTS.getConfigurationSection(broadcastId);
+        ConfigurationSection broadcast = Config.ANNOUNCEMENTS.getConfigurationSection(broadcastId);
 
         for (String message : broadcast.getStringList("lines")) {
-            plugin.getServer().getOnlinePlayers().forEach(p -> {
-                if (!p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !Objects.requireNonNull(broadcast.getString("permission")).equalsIgnoreCase("none")) return;
-
-                Color.sendMessage(p, message, true, true);
-            });
+            for (Player p : plugin.getServer().getOnlinePlayers()) {
+                if (p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !Objects.requireNonNull(broadcast.getString("permission")).equalsIgnoreCase("none")) {
+                    Color.sendMessage(p, message, true, true);
+                }
+            }
         }
 
-        Bukkit.getServer().getOnlinePlayers().forEach(p -> {
+        for (Player p : plugin.getServer().getOnlinePlayers()) {
             try {
-                if (!p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !Objects.requireNonNull(broadcast.getString("permission")).equalsIgnoreCase("none")) return;
-
-                p.playSound(p.getLocation(), Sound.valueOf(broadcast.getString("sound.name")),
-                        (float) broadcast.getInt("sound.volume"), (float) broadcast.getInt("sound.pitch"));
+                if (p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !Objects.requireNonNull(broadcast.getString("permission")).equalsIgnoreCase("none")) {
+                    p.playSound(p.getLocation(), Sound.valueOf(broadcast.getString("sound.name")),
+                            (float) broadcast.getInt("sound.volume"), (float) broadcast.getInt("sound.pitch"));
+                }
             } catch (Exception e) {
                 if (p.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
                     Color.sendMessage(p, "&cSomething went wrong with the sound name. Check console for more information.", true, true);
@@ -79,7 +80,7 @@ public class AnnounceTask implements Runnable {
                 Logger.NONE.out("");
                 Logger.NONE.out(Color.translate("&8&m==&c&m=====&f&m======================&c&m=====&8&m=="));
             }
-        });
+        }
     }
 
     private String getRandom(Set<String> set) {

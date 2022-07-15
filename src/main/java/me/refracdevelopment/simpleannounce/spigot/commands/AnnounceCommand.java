@@ -19,7 +19,7 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refracdevelopment.simpleannounce.spigot.command.commands;
+package me.refracdevelopment.simpleannounce.spigot.commands;
 
 import me.refracdevelopment.simpleannounce.shared.Permissions;
 import me.refracdevelopment.simpleannounce.spigot.utilities.Logger;
@@ -27,56 +27,39 @@ import me.refracdevelopment.simpleannounce.spigot.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Discord;
 import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
-import me.refracdevelopment.simpleannounce.spigot.command.CommandFramework;
-import me.refracdevelopment.simpleannounce.spigot.command.CommandInfo;
 import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-@CommandInfo(name = "announce", description = "Allows you to announce your messages manually", requiresPlayer = true)
-public class AnnounceCommand extends CommandFramework {
+public class AnnounceCommand implements CommandExecutor {
 
-    private SimpleAnnounce plugin;
+    private final SimpleAnnounce plugin;
 
     public AnnounceCommand(SimpleAnnounce plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        if (!Config.ANNOUNCE_ENABLED) return;
-        if (args.length == 0) {
-            if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
-                Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
-                return;
-            }
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (!Config.ANNOUNCE_ENABLED) return true;
 
-            if (Config.ANNOUNCE_OUTPUT.equalsIgnoreCase("custom") && Config.ANNOUNCE_MESSAGE != null) {
-                for (String s : Config.ANNOUNCE_MESSAGE)
-                    Color.sendMessage(sender, s, true, true);
-            } else {
-                Color.sendMessage(sender, "", false, false);
-                Color.sendMessage(sender, "&b&lSimpleAnnounce %arrow_2% Help", true, true);
-                Color.sendMessage(sender, "", false, false);
-                Color.sendMessage(sender, "&b/announce <message> - Allows you to send announcements.", true, true);
-                Color.sendMessage(sender, "&b/announcereload - Reloads the config files.", true, true);
-                Color.sendMessage(sender, "", false, false);
-            }
+        if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
+            Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
+            return true;
         }
 
         if (args.length >= 1) {
-            if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
-                Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
-                return;
-            }
-
             if (Config.FORMAT_ENABLED) {
                 for (String format : Config.FORMAT_LINES)
-                        plugin.getServer().getOnlinePlayers().forEach(p -> Color.sendMessage(p,
-                                format.replace("%message%", stringArrayToString(args)), true, true));
+                    for (Player p : plugin.getServer().getOnlinePlayers()) {
+                        Color.sendMessage(p, format.replace("%message%", stringArrayToString(args)), true, true);
+                    }
 
                 if (Config.FORMAT_SOUND_ENABLED && Config.FORMAT_SOUND_NAME != null) {
-                    plugin.getServer().getOnlinePlayers().forEach(p -> {
+                    for (Player p : plugin.getServer().getOnlinePlayers()) {
                         try {
                             p.playSound(p.getLocation(), Sound.valueOf(Config.FORMAT_SOUND_NAME),
                                     (float) Config.FORMAT_SOUND_VOLUME, (float) Config.FORMAT_SOUND_PITCH);
@@ -91,22 +74,33 @@ public class AnnounceCommand extends CommandFramework {
                             Logger.NONE.out("");
                             Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
                         }
-                    });
+                    }
                 }
             } else {
                 String format = Config.PREFIX + stringArrayToString(args);
 
-                if (sender instanceof Player) {
-                    Player player = (Player) sender;
-
-                    plugin.getServer().getOnlinePlayers().forEach(p -> Color.sendMessage(player, format, true, true));
+                for (Player p : plugin.getServer().getOnlinePlayers()) {
+                    Color.sendMessage(p, format, true, true);
                 }
             }
 
             if (Discord.DISCORD_EMBED) {
                 plugin.getDiscordImpl().sendEmbed(stringArrayToString(args).replace("%arrow%", "»"), java.awt.Color.CYAN);
             } else plugin.getDiscordImpl().sendMessage(stringArrayToString(args).replace("%arrow%", "»"));
+        } else {
+            if (Config.ANNOUNCE_OUTPUT.equalsIgnoreCase("custom") && Config.ANNOUNCE_MESSAGE != null) {
+                for (String s : Config.ANNOUNCE_MESSAGE)
+                    Color.sendMessage(sender, s, true, true);
+            } else {
+                Color.sendMessage(sender, "", false, false);
+                Color.sendMessage(sender, "&b&lSimpleAnnounce %arrow_2% Help", true, true);
+                Color.sendMessage(sender, "", false, false);
+                Color.sendMessage(sender, "&b/announce <message> - Allows you to send announcements.", true, true);
+                Color.sendMessage(sender, "&b/announcereload - Reloads the config files.", true, true);
+                Color.sendMessage(sender, "", false, false);
+            }
         }
+        return true;
     }
 
     protected String stringArrayToString(String[] args) {

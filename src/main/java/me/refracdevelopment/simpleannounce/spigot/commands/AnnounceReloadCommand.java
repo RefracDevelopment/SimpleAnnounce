@@ -19,7 +19,7 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refracdevelopment.simpleannounce.spigot.command.commands;
+package me.refracdevelopment.simpleannounce.spigot.commands;
 
 import me.refracdevelopment.simpleannounce.shared.Permissions;
 import me.refracdevelopment.simpleannounce.spigot.tasks.AnnounceTask;
@@ -27,31 +27,32 @@ import me.refracdevelopment.simpleannounce.spigot.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Files;
 import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
-import me.refracdevelopment.simpleannounce.spigot.command.CommandFramework;
-import me.refracdevelopment.simpleannounce.spigot.command.CommandInfo;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-@CommandInfo(name = "announcereload", description = "Reloads the Simple Announce plugin", requiresPlayer = false)
-public class AnnounceReloadCommand extends CommandFramework {
+public class AnnounceReloadCommand implements CommandExecutor {
 
-    private SimpleAnnounce plugin;
+    private final SimpleAnnounce plugin;
 
     public AnnounceReloadCommand(SimpleAnnounce plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        if (!Config.RELOAD_ENABLED) return;
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (!Config.RELOAD_ENABLED) return true;
 
         if (!sender.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
             Color.sendMessage(sender, Config.RELOAD, true, true);
-            return;
+            return true;
         }
 
         Files.reloadFiles(plugin);
         plugin.getServer().getScheduler().cancelTasks(plugin);
         plugin.getServer().getScheduler().runTaskTimer(plugin, new AnnounceTask(plugin), Config.INTERVAL*20L, Config.INTERVAL*20L);
         Color.sendMessage(sender, Config.RELOAD, true, true);
+        return true;
     }
 }
