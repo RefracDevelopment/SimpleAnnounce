@@ -21,6 +21,8 @@
  */
 package me.refracdevelopment.simpleannounce.bungee;
 
+import lombok.Getter;
+import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
 import me.refracdevelopment.simpleannounce.shared.Settings;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Files;
@@ -29,12 +31,12 @@ import me.refracdevelopment.simpleannounce.bungee.commands.AnnounceReloadCommand
 import me.refracdevelopment.simpleannounce.bungee.tasks.AnnounceTask;
 import me.refracdevelopment.simpleannounce.bungee.utilities.DevJoin;
 import me.refracdevelopment.simpleannounce.bungee.utilities.DiscordImpl;
-import me.refracdevelopment.simpleannounce.bungee.utilities.Logger;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.bstats.bungeecord.Metrics;
 
 import java.util.concurrent.TimeUnit;
 
+@Getter
 public final class BungeeAnnounce extends Plugin {
     private DiscordImpl discordImpl;
 
@@ -45,39 +47,25 @@ public final class BungeeAnnounce extends Plugin {
 
         this.discordImpl = new DiscordImpl();
 
-        loadCommands();
+        getProxy().getPluginManager().registerCommand(this, new AnnounceCommand(this));
+        getProxy().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
+        Color.log("&aLoaded commands.");
         loadListeners();
+        Color.log("&aLoaded listeners.");
 
         new Metrics(this, 15596);
 
-        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
-        Logger.NONE.out("&e" + Settings.getName + " has been enabled.");
-        Logger.NONE.out(" &f[*] &6Version&f: &b" + Settings.getVersion);
-        Logger.NONE.out(" &f[*] &6Name&f: &b" + Settings.getName);
-        Logger.NONE.out(" &f[*] &6Author&f: &b" + Settings.getDeveloper);
-        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        getProxy().getScheduler().cancel(this);
-        getProxy().getPluginManager().unregisterCommands(this);
-        getProxy().getPluginManager().unregisterListeners(this);
-    }
-
-    private void loadCommands() {
-        getProxy().getPluginManager().registerCommand(this, new AnnounceCommand(this));
-        getProxy().getPluginManager().registerCommand(this, new AnnounceReloadCommand(this));
+        Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+        Color.log("&e" + Settings.getName + " has been enabled.");
+        Color.log(" &f[*] &6Version&f: &b" + Settings.getVersion);
+        Color.log(" &f[*] &6Name&f: &b" + Settings.getName);
+        Color.log(" &f[*] &6Author&f: &b" + Settings.getDeveloper);
+        Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
     }
 
     private void loadListeners() {
         getProxy().getPluginManager().registerListener(this, new DevJoin());
 
         getProxy().getScheduler().schedule(this, new AnnounceTask(this), Config.INTERVAL, Config.INTERVAL, TimeUnit.SECONDS);
-    }
-
-    public DiscordImpl getDiscordImpl() {
-        return discordImpl;
     }
 }

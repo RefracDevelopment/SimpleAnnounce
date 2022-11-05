@@ -35,14 +35,12 @@ public class AnnounceCommand extends Command {
     private final BungeeAnnounce plugin;
 
     public AnnounceCommand(BungeeAnnounce plugin) {
-        super(Config.ANNOUNCE_COMMAND, "", Config.ANNOUNCE_ALIAS);
+        super("announce");
         this.plugin = plugin;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (!Config.ANNOUNCE_ENABLED) return;
-
         if (args.length == 0) {
             if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
                 Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
@@ -75,9 +73,11 @@ public class AnnounceCommand extends Command {
                 plugin.getProxy().getPlayers().forEach(p -> Color.sendMessage(p, Config.PREFIX + stringArrayToString(args), true, true));
             }
 
-            if (Discord.DISCORD_EMBED) {
-                plugin.getDiscordImpl().sendEmbed(stringArrayToString(args).replace("{arrow}", "\u00BB"), java.awt.Color.CYAN);
-            } else plugin.getDiscordImpl().sendMessage(stringArrayToString(args).replace("{arrow}", "\u00BB"));
+            if (Discord.DISCORD_ENABLED) {
+                if (Discord.DISCORD_EMBED) {
+                    plugin.getDiscordImpl().sendEmbed(stringArrayToString(args).replace("%arrow%", "\u00BB"), java.awt.Color.CYAN);
+                } else plugin.getDiscordImpl().sendMessage(stringArrayToString(args).replace("%arrow%", "\u00BB"));
+            }
         }
     }
 

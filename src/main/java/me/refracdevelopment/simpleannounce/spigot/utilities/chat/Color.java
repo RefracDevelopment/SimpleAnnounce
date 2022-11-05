@@ -21,14 +21,22 @@
  */
 package me.refracdevelopment.simpleannounce.spigot.utilities.chat;
 
-import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.refracdevelopment.simpleannounce.spigot.utilities.VersionCheck;
+import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public class Color {
+
+    private static final Pattern HEX_PATTERN = Pattern.compile("(&#[0-9a-fA-F]{6})");
 
     public static String translate(Player player, String source) {
         source = Placeholders.setPlaceholders(player, source);
@@ -39,9 +47,25 @@ public class Color {
     }
 
     public static String translate(String source) {
-        source = IridiumColorAPI.process(source);
+        String hexColored = source;
 
-        return ChatColor.translateAlternateColorCodes('&', source);
+        if (VersionCheck.isOnePointSixteenPlus()) {
+            Matcher matcher = HEX_PATTERN.matcher(source);
+            StringBuffer sb = new StringBuffer();
+            while (matcher.find()) {
+                String hex = matcher.group(1).substring(1);
+                matcher.appendReplacement(sb, net.md_5.bungee.api.ChatColor.of(hex) + "");
+            }
+            matcher.appendTail(sb);
+
+            hexColored = sb.toString();
+        }
+
+        return org.bukkit.ChatColor.translateAlternateColorCodes('&', hexColored);
+    }
+
+    public static List<String> translate(List<String> source) {
+        return source.stream().map(Color::translate).collect(Collectors.toList());
     }
 
     public static void sendMessage(CommandSender sender, String source, boolean color, boolean placeholders) {
@@ -57,5 +81,9 @@ public class Color {
         if (color) source = translate(source);
 
         sender.sendMessage(source);
+    }
+
+    public static void log(String message) {
+        sendMessage(Bukkit.getConsoleSender(), Config.PREFIX + " " + message, true, true);
     }
 }

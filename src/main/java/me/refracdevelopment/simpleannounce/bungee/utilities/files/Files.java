@@ -23,7 +23,7 @@ package me.refracdevelopment.simpleannounce.bungee.utilities.files;
 
 import com.google.common.io.ByteStreams;
 import me.refracdevelopment.simpleannounce.bungee.BungeeAnnounce;
-import me.refracdevelopment.simpleannounce.bungee.utilities.Logger;
+import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -67,18 +67,23 @@ public class Files {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
                     loadResource(announce, "bungee-config.yml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            Color.log("&cFailed to load bungee-config.yml");
+            Color.log(e.getMessage());
         }
 
         try {
             discord = ConfigurationProvider.getProvider(YamlConfiguration.class).load(
                     loadResource(announce, "discord.yml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            Color.log("&cFailed to load discord.yml");
+            Color.log(e.getMessage());
         }
 
-        Logger.NONE.out("&c==========================================");
-        Logger.NONE.out("&aAll files have been loaded correctly!");
-        Logger.NONE.out("&c==========================================");
+        Config.loadConfig();
+        Discord.loadDiscord();
+
+        Color.log("&c==========================================");
+        Color.log("&aAll files have been loaded correctly!");
+        Color.log("&c==========================================");
     }
 }

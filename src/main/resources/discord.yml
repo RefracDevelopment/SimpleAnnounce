@@ -1,4 +1,5 @@
 discord:
+  # This only sends manual announcements.
   enabled: false
   webhook: "INSERT-WEBHOOK-HERE"
   # Do you want an embed or a normal message?

@@ -22,7 +22,6 @@
 package me.refracdevelopment.simpleannounce.bungee.tasks;
 
 import me.refracdevelopment.simpleannounce.bungee.BungeeAnnounce;
-import me.refracdevelopment.simpleannounce.bungee.utilities.Logger;
 import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -44,7 +43,7 @@ public class AnnounceTask implements Runnable {
         Set<String> broadcastList = (Set<String>) Config.ANNOUNCEMENTS.getKeys();
 
         if (broadcastList.isEmpty()) {
-            Logger.WARNING.out("[SimpleAnnounce] There are no announcements :(");
+            Color.log("&eThere are no announcements :(");
             plugin.getProxy().getScheduler().cancel(plugin);
             return;
         }
@@ -55,6 +54,8 @@ public class AnnounceTask implements Runnable {
         for (String message : broadcast.getStringList("lines")) {
             for (ProxiedPlayer p : plugin.getProxy().getPlayers()) {
                 if (p.hasPermission(broadcast.getString("permission")) && !broadcast.getString("permission").equalsIgnoreCase("none")) {
+                    Color.sendMessage(p, message, true, true);
+                } else if (broadcast.getString("permission").equalsIgnoreCase("none")) {
                     Color.sendMessage(p, message, true, true);
                 }
             }

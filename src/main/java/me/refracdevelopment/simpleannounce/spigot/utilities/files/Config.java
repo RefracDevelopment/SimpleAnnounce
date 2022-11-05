@@ -47,10 +47,6 @@ public class Config {
     // Announcements
     public static ConfigurationSection ANNOUNCEMENTS;
 
-    // Commands
-    public static boolean ANNOUNCE_ENABLED;
-    public static boolean RELOAD_ENABLED;
-
     public static void loadConfig() {
         // General
         INTERVAL = Files.getConfig().getInt("interval");
@@ -72,9 +68,5 @@ public class Config {
 
         // Announcements
         ANNOUNCEMENTS = Files.getConfig().getConfigurationSection("announcements");
-
-        // Commands
-        ANNOUNCE_ENABLED = Files.getConfig().getBoolean("commands.announce.enabled");
-        RELOAD_ENABLED = Files.getConfig().getBoolean("commands.reload.enabled");
     }
 }

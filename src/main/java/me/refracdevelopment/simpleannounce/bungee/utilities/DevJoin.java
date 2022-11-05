@@ -36,9 +36,9 @@ public class DevJoin implements Listener {
     public void onJoin(ServerConnectedEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
-        if (player.getName().equalsIgnoreCase("Refracxx")) {
+        if (player.getUniqueId().equals(Settings.getDevUUID)) {
             sendDevMessage(player);
-        } else if (player.getName().equalsIgnoreCase("RyanMood")) {
+        } else if (player.getUniqueId().equals(Settings.getDevUUID2)) {
             sendDevMessage(player);
         }
     }

@@ -1,6 +1,6 @@
 # SimpleAnnounce by RefracDevelopment
 # If you have suggestions put them in my discord:
-# https://discord.gg/EFeSKPg739
+# https://discord.refracdev.ml
 #--------------------------------------
 # Placeholders: (PlaceholderAPI is supported)
 # %player% - Get the player name
@@ -17,7 +17,7 @@ interval: 300 # 300 = 5 minutes
 
 messages:
   # If you don't want a prefix leave this blank
-  prefix: "&b&lSIMPLEANNOUNCE >> &7"
+  prefix: "&8[&b&lSimpleAnnounce&8]"
   no-permission: "&cYou don't have permission to execute this command."
   reload: "&7Config files reloaded. Changes should be live in-game!"
   # If this is set to "custom" you can change the /announce output message to anything
@@ -69,10 +69,5 @@ announcements:
       - "&8%arrow% &7Thank you for downloading SimpleAnnounce!"
       - "&8%arrow% &7This is the default config, edit it to your liking!"
       - ""
-      - "&8%arrow% &7You can visit our discord @ &b&ndiscord.gg/EFeSKPg739"
+      - "&8%arrow% &7You can visit our discord @ &b&ndiscord.refracdev.ml"
       - "&8&m-------------------------------------------------"
-commands:
-  announce:
-    enabled: true
-  reload:
-    enabled: true

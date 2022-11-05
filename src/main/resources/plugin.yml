@@ -1,16 +1,11 @@
 name: 'SimpleAnnounce'
 version: '${project.version}'
 main: me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce
+api-version: '1.13'
 softdepend:
-  - PlaceholderAPI
+  - 'PlaceholderAPI'
 authors:
   - 'RefracDevelopment'
   - 'Refrac'
 description: 'A Lightweight Announcer Plugin'
-website: 'https://discord.gg/EFeSKPg739'
-
-commands:
-  announce:
-    description: 'Announce command'
-  announcereload:
-    description: 'Announce reload command'
+website: 'https://discord.refracdev.ml'

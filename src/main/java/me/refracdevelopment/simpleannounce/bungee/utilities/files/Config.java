@@ -43,14 +43,6 @@ public class Config {
     // Announcements
     public static Configuration ANNOUNCEMENTS;
 
-    // Commands
-    public static boolean ANNOUNCE_ENABLED;
-    public static String ANNOUNCE_COMMAND;
-    public static String ANNOUNCE_ALIAS;
-    public static boolean RELOAD_ENABLED;
-    public static String RELOAD_COMAND;
-    public static String RELOAD_ALIAS;
-
     public static void loadConfig() {
         // General
         INTERVAL = Files.getConfig().getInt("interval");
@@ -68,13 +60,5 @@ public class Config {
 
         // Announcements
         ANNOUNCEMENTS = Files.getConfig().getSection("announcements");
-
-        // Commands
-        ANNOUNCE_ENABLED = Files.getConfig().getBoolean("commands.announce.enabled");
-        ANNOUNCE_COMMAND = Files.getConfig().getString("commands.announce.command");
-        ANNOUNCE_ALIAS = Files.getConfig().getString("commands.announce.alias");
-        RELOAD_ENABLED = Files.getConfig().getBoolean("commands.reload.enabled");
-        RELOAD_COMAND = Files.getConfig().getString("commands.reload.command");
-        RELOAD_ALIAS = Files.getConfig().getString("commands.reload.alias");
     }
 }

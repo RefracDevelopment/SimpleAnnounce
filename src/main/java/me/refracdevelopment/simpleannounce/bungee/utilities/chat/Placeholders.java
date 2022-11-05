@@ -39,7 +39,7 @@ public class Placeholders {
         placeholder = placeholder.replace("%arrow_2%", "\u27A5");
         placeholder = placeholder.replace("%star%", "\u2726");
         placeholder = placeholder.replace("%circle%", "\u2219");
-        placeholder = placeholder.replace("|", "\u2503");
+        placeholder = placeholder.replace("|", "\u239F");
 
         return placeholder;
     }

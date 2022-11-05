@@ -40,7 +40,7 @@ public class Placeholders {
         placeholder = placeholder.replace("%arrow_2%", StringEscapeUtils.unescapeJava("\u27A5"));
         placeholder = placeholder.replace("%star%", StringEscapeUtils.unescapeJava("\u2726"));
         placeholder = placeholder.replace("%circle%", StringEscapeUtils.unescapeJava("\u2219"));
-        placeholder = placeholder.replace("|", StringEscapeUtils.unescapeJava("\u2503"));
+        placeholder = placeholder.replace("|", StringEscapeUtils.unescapeJava("\u239F"));
 
         return placeholder;
     }

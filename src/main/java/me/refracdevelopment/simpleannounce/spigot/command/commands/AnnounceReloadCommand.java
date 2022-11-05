@@ -19,21 +19,40 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refracdevelopment.simpleannounce.spigot.utilities;
+package me.refracdevelopment.simpleannounce.spigot.command.commands;
 
+import me.refracdevelopment.simpleannounce.shared.Permissions;
+import me.refracdevelopment.simpleannounce.spigot.command.Command;
 import me.refracdevelopment.simpleannounce.spigot.utilities.chat.Color;
-import org.bukkit.Bukkit;
+import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
+import me.refracdevelopment.simpleannounce.spigot.utilities.files.Files;
+import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-public enum Logger {
+public class AnnounceReloadCommand extends Command {
 
-    NONE('r'), SUCCESS('a'), ERROR('c'), WARNING('e'), INFO('b');
+    private final SimpleAnnounce plugin;
 
-    final char color;
+    public AnnounceReloadCommand(SimpleAnnounce plugin) {
+        super("announcereload");
+        this.plugin = plugin;
+    }
 
-    Logger(char color) { this.color = color; }
+    @Override
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+        if (!sender.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
+            Color.sendMessage(sender, Config.RELOAD, true, true);
+            return true;
+        }
 
-    public void out(String message) {
-        message = Color.translate(String.format("&%c%s", this.color, message));
-        Bukkit.getConsoleSender().sendMessage(message);
+        Files.reloadFiles();
+        Color.sendMessage(sender, Config.RELOAD, true, true);
+        return true;
+    }
+
+    @Override
+    public int compareTo(@NotNull Command o) {
+        return 0;
     }
 }

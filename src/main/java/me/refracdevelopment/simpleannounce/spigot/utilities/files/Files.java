@@ -22,7 +22,7 @@
 package me.refracdevelopment.simpleannounce.spigot.utilities.files;
 
 import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
-import me.refracdevelopment.simpleannounce.spigot.utilities.Logger;
+import me.refracdevelopment.simpleannounce.spigot.utilities.chat.Color;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -54,9 +54,9 @@ public class Files {
         Config.loadConfig();
         Discord.loadDiscord();
 
-        Logger.NONE.out("&c==========================================");
-        Logger.NONE.out("&aAll files have been loaded correctly!");
-        Logger.NONE.out("&c==========================================");
+        Color.log("&c==========================================");
+        Color.log("&aAll files have been loaded correctly!");
+        Color.log("&c==========================================");
     }
 
     public static FileConfiguration getConfig() {
@@ -67,28 +67,26 @@ public class Files {
         return discord;
     }
 
-    public static void reloadFiles(SimpleAnnounce announce) {
-        configFile = new File(announce.getDataFolder(), "config.yml");
+    public static void reloadFiles() {
         try {
             config = YamlConfiguration.loadConfiguration(configFile);
         } catch (Exception e) {
-            Logger.ERROR.out("Failed to reload the config file!");
-            e.printStackTrace();
+            Color.log("&cFailed to reload the config file!");
+            Color.log(e.getLocalizedMessage());
         }
 
-        discordFile = new File(announce.getDataFolder(), "discord.yml");
         try {
             discord = YamlConfiguration.loadConfiguration(discordFile);
         } catch (Exception e) {
-            Logger.ERROR.out("Failed to reload the discord file!");
-            e.printStackTrace();
+            Color.log("&cFailed to reload the discord file!");
+            Color.log(e.getLocalizedMessage());
         }
 
         Config.loadConfig();
         Discord.loadDiscord();
 
-        Logger.NONE.out("&c==========================================");
-        Logger.NONE.out("&aAll files have been loaded correctly!");
-        Logger.NONE.out("&c==========================================");
+        Color.log("&c==========================================");
+        Color.log("&aAll files have been loaded correctly!");
+        Color.log("&c==========================================");
     }
 }

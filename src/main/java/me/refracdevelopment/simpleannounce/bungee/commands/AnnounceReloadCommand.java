@@ -24,38 +24,28 @@ package me.refracdevelopment.simpleannounce.bungee.commands;
 import me.refracdevelopment.simpleannounce.bungee.BungeeAnnounce;
 import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
-import me.refracdevelopment.simpleannounce.bungee.utilities.files.Discord;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Files;
 import me.refracdevelopment.simpleannounce.shared.Permissions;
-import me.refracdevelopment.simpleannounce.bungee.tasks.AnnounceTask;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
-
-import java.util.concurrent.TimeUnit;
 
 public class AnnounceReloadCommand extends Command {
 
     private final BungeeAnnounce plugin;
 
     public AnnounceReloadCommand(BungeeAnnounce plugin) {
-        super(Config.RELOAD_COMAND, "", Config.RELOAD_ALIAS);
+        super("announcereload");
         this.plugin = plugin;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (!Config.RELOAD_ENABLED) return;
-
         if (!sender.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
             Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
             return;
         }
 
         Files.loadFiles(plugin);
-        Config.loadConfig();
-        Discord.loadDiscord();
-        plugin.getProxy().getScheduler().cancel(plugin);
-        plugin.getProxy().getScheduler().schedule(plugin, new AnnounceTask(plugin), Config.INTERVAL, Config.INTERVAL, TimeUnit.SECONDS);
         Color.sendMessage(sender, Config.RELOAD, true, true);
     }
 }

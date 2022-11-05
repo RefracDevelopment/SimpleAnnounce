@@ -35,9 +35,9 @@ public class DevJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID)) {
+        if (player.getUniqueId().equals(Settings.getDevUUID)) {
             sendDevMessage(player);
-        } else if (player.getUniqueId().toString().equalsIgnoreCase(Settings.getDevUUID2)) {
+        } else if (player.getUniqueId().equals(Settings.getDevUUID2)) {
             sendDevMessage(player);
         }
     }

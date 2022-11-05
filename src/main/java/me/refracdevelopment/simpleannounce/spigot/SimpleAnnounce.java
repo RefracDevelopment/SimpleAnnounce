@@ -21,20 +21,19 @@
  */
 package me.refracdevelopment.simpleannounce.spigot;
 
+import lombok.Getter;
 import me.refracdevelopment.simpleannounce.shared.Settings;
-import me.refracdevelopment.simpleannounce.spigot.commands.AnnounceCommand;
-import me.refracdevelopment.simpleannounce.spigot.commands.AnnounceReloadCommand;
 import me.refracdevelopment.simpleannounce.spigot.tasks.AnnounceTask;
+import me.refracdevelopment.simpleannounce.spigot.utilities.CommandManager;
 import me.refracdevelopment.simpleannounce.spigot.utilities.DevJoin;
 import me.refracdevelopment.simpleannounce.spigot.utilities.DiscordImpl;
-import me.refracdevelopment.simpleannounce.spigot.utilities.Logger;
+import me.refracdevelopment.simpleannounce.spigot.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Files;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
-
+@Getter
 public final class SimpleAnnounce extends JavaPlugin {
     private DiscordImpl discordImpl;
 
@@ -45,41 +44,28 @@ public final class SimpleAnnounce extends JavaPlugin {
 
         this.discordImpl = new DiscordImpl();
 
-        loadCommands();
+        CommandManager.registerAll();
+        Color.log("&aLoaded commands.");
         loadListeners();
+        Color.log("&aLoaded listeners.");
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            Logger.INFO.out("Hooked into PlaceholderAPI.");
+            Color.log("&aHooked into PlaceholderAPI.");
         }
 
         new Metrics(this, 15595);
 
-        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
-        Logger.NONE.out("&e" + Settings.getName + " has been enabled.");
-        Logger.NONE.out(" &f[*] &6Version&f: &b" + Settings.getVersion);
-        Logger.NONE.out(" &f[*] &6Name&f: &b" + Settings.getName);
-        Logger.NONE.out(" &f[*] &6Author&f: &b" + Settings.getDeveloper);
-        Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        getServer().getScheduler().cancelTasks(this);
-    }
-
-    private void loadCommands() {
-        Objects.requireNonNull(getCommand("announce")).setExecutor(new AnnounceCommand(this));
-        Objects.requireNonNull(getCommand("announcereload")).setExecutor(new AnnounceReloadCommand(this));
+        Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+        Color.log("&e" + Settings.getName + " has been enabled.");
+        Color.log(" &f[*] &6Version&f: &b" + Settings.getVersion);
+        Color.log(" &f[*] &6Name&f: &b" + Settings.getName);
+        Color.log(" &f[*] &6Author&f: &b" + Settings.getDeveloper);
+        Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
     }
 
     private void loadListeners() {
         getServer().getPluginManager().registerEvents(new DevJoin(), this);
 
         getServer().getScheduler().runTaskTimer(this, new AnnounceTask(this), Config.INTERVAL*20L, Config.INTERVAL*20L);
-    }
-
-    public DiscordImpl getDiscordImpl() {
-        return discordImpl;
     }
 }

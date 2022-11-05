@@ -19,33 +19,31 @@
  * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package me.refracdevelopment.simpleannounce.spigot.commands;
+package me.refracdevelopment.simpleannounce.spigot.command.commands;
 
 import me.refracdevelopment.simpleannounce.shared.Permissions;
-import me.refracdevelopment.simpleannounce.spigot.utilities.Logger;
+import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
+import me.refracdevelopment.simpleannounce.spigot.command.Command;
 import me.refracdevelopment.simpleannounce.spigot.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Discord;
-import me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class AnnounceCommand implements CommandExecutor {
+public class AnnounceCommand extends Command {
 
     private final SimpleAnnounce plugin;
 
     public AnnounceCommand(SimpleAnnounce plugin) {
+        super("announce");
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!Config.ANNOUNCE_ENABLED) return true;
-
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!sender.hasPermission(Permissions.ANNOUNCE_USE)) {
             Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
             return true;
@@ -54,39 +52,43 @@ public class AnnounceCommand implements CommandExecutor {
         if (args.length >= 1) {
             if (Config.FORMAT_ENABLED) {
                 for (String format : Config.FORMAT_LINES)
-                    for (Player p : plugin.getServer().getOnlinePlayers()) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
                         Color.sendMessage(p, format.replace("%message%", stringArrayToString(args)), true, true);
                     }
 
                 if (Config.FORMAT_SOUND_ENABLED && Config.FORMAT_SOUND_NAME != null) {
-                    for (Player p : plugin.getServer().getOnlinePlayers()) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
                         try {
                             p.playSound(p.getLocation(), Sound.valueOf(Config.FORMAT_SOUND_NAME),
                                     (float) Config.FORMAT_SOUND_VOLUME, (float) Config.FORMAT_SOUND_PITCH);
                         } catch (Exception e) {
-                            if (p.hasPermission(Permissions.ANNOUNCE_ADMIN))
+                            if (p.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
                                 Color.sendMessage(p, "&cSomething went wrong with the sound name. Check console for more information.", true, true);
-                            Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
-                            Logger.ERROR.out("SimpleAnnounce - Sound Error");
-                            Logger.NONE.out("");
-                            Logger.ERROR.out("The sound name '" + Config.FORMAT_SOUND_NAME + "' is invalid!");
-                            Logger.ERROR.out("Please make sure your sound name is correct.");
-                            Logger.NONE.out("");
-                            Logger.NONE.out("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+                            }
+                            Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+                            Color.log("&cSimpleAnnounce - Sound Error");
+                            Color.log("");
+                            Color.log("&cThe sound name '" + Config.FORMAT_SOUND_NAME + "' is invalid!");
+                            Color.log("&cPlease make sure your sound name is correct you can check this list:");
+                            Color.log("&chttps://helpch.at/docs/" + Bukkit.getBukkitVersion().replace("-R0.1-SNAPSHOT", "") + "/org/bukkit/Sound.html");
+                            Color.log("");
+                            Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
                         }
                     }
                 }
             } else {
                 String format = Config.PREFIX + stringArrayToString(args);
 
-                for (Player p : plugin.getServer().getOnlinePlayers()) {
+                for (Player p : Bukkit.getOnlinePlayers()) {
                     Color.sendMessage(p, format, true, true);
                 }
             }
 
-            if (Discord.DISCORD_EMBED) {
-                plugin.getDiscordImpl().sendEmbed(stringArrayToString(args).replace("%arrow%", "»"), java.awt.Color.CYAN);
-            } else plugin.getDiscordImpl().sendMessage(stringArrayToString(args).replace("%arrow%", "»"));
+            if (Discord.DISCORD_ENABLED) {
+                if (Discord.DISCORD_EMBED) {
+                    plugin.getDiscordImpl().sendEmbed(stringArrayToString(args).replace("%arrow%", "»"), java.awt.Color.CYAN);
+                } else plugin.getDiscordImpl().sendMessage(stringArrayToString(args).replace("%arrow%", "»"));
+            }
         } else {
             if (Config.ANNOUNCE_OUTPUT.equalsIgnoreCase("custom") && Config.ANNOUNCE_MESSAGE != null) {
                 for (String s : Config.ANNOUNCE_MESSAGE)
@@ -112,5 +114,10 @@ public class AnnounceCommand implements CommandExecutor {
             }
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public int compareTo(@NotNull Command o) {
+        return 0;
     }
 }

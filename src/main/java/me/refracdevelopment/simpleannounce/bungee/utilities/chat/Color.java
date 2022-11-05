@@ -21,12 +21,20 @@
  */
 package me.refracdevelopment.simpleannounce.bungee.utilities.chat;
 
+import me.refracdevelopment.simpleannounce.spigot.utilities.VersionCheck;
+import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Color {
+
+    private static final Pattern HEX_PATTERN = Pattern.compile("(&#[0-9a-fA-F]{6})");
 
     public static TextComponent translate(ProxiedPlayer player, String source) {
         source = Placeholders.setPlaceholders(player, source);
@@ -35,6 +43,16 @@ public class Color {
     }
 
     public static String translate(String source) {
+        Matcher matcher = HEX_PATTERN.matcher(source);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String hex = matcher.group(1).substring(1);
+            matcher.appendReplacement(sb, ChatColor.of(hex) + "");
+        }
+        matcher.appendTail(sb);
+
+        source = sb.toString();
+
         return ChatColor.translateAlternateColorCodes('&', source);
     }
 
@@ -45,5 +63,9 @@ public class Color {
         if (color) source = translate(source);
 
         sender.sendMessage(new TextComponent(source));
+    }
+
+    public static void log(String message) {
+        sendMessage(ProxyServer.getInstance().getConsole(), Config.PREFIX + " " + message, true, true);
     }
 }
