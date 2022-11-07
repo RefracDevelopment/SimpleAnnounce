@@ -42,11 +42,11 @@ public class AnnounceReloadCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!sender.hasPermission(Permissions.ANNOUNCE_ADMIN)) {
-            Color.sendMessage(sender, Config.RELOAD, true, true);
+            Color.sendMessage(sender, Config.NO_PERMISSION, true, true);
             return true;
         }
 
-        Files.reloadFiles();
+        Files.reloadFiles(plugin);
         Color.sendMessage(sender, Config.RELOAD, true, true);
         return true;
     }

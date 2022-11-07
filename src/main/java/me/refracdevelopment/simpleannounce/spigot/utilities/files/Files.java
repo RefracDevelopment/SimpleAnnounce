@@ -34,20 +34,20 @@ public class Files {
     private static File discordFile;
     private static FileConfiguration discord;
 
-    public static void loadFiles(SimpleAnnounce announce) {
-        if (!announce.getDataFolder().exists()) {
-            announce.getDataFolder().mkdirs();
+    public static void loadFiles(SimpleAnnounce plugin) {
+        if (!plugin.getDataFolder().exists()) {
+            plugin.getDataFolder().mkdirs();
         }
 
-        configFile = new File(announce.getDataFolder(), "config.yml");
+        configFile = new File(plugin.getDataFolder(), "config.yml");
         if (!configFile.exists()) {
-            announce.saveResource("config.yml", false);
+            plugin.saveResource("config.yml", false);
         }
         config = YamlConfiguration.loadConfiguration(configFile);
 
-        discordFile = new File(announce.getDataFolder(), "discord.yml");
+        discordFile = new File(plugin.getDataFolder(), "discord.yml");
         if (!discordFile.exists()) {
-            announce.saveResource("discord.yml", false);
+            plugin.saveResource("discord.yml", false);
         }
         discord = YamlConfiguration.loadConfiguration(discordFile);
 
@@ -67,19 +67,21 @@ public class Files {
         return discord;
     }
 
-    public static void reloadFiles() {
+    public static void reloadFiles(SimpleAnnounce plugin) {
+        configFile = new File(plugin.getDataFolder(), "config.yml");
         try {
             config = YamlConfiguration.loadConfiguration(configFile);
         } catch (Exception e) {
             Color.log("&cFailed to reload the config file!");
-            Color.log(e.getLocalizedMessage());
+            Color.log(e.getMessage());
         }
 
+        discordFile = new File(plugin.getDataFolder(), "discord.yml");
         try {
             discord = YamlConfiguration.loadConfiguration(discordFile);
         } catch (Exception e) {
             Color.log("&cFailed to reload the discord file!");
-            Color.log(e.getLocalizedMessage());
+            Color.log(e.getMessage());
         }
 
         Config.loadConfig();

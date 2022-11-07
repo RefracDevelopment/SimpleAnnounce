@@ -24,6 +24,7 @@ package me.refracdevelopment.simpleannounce.bungee.tasks;
 import me.refracdevelopment.simpleannounce.bungee.BungeeAnnounce;
 import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
+import me.refracdevelopment.simpleannounce.bungee.utilities.files.Files;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
@@ -49,7 +50,7 @@ public class AnnounceTask implements Runnable {
         }
 
         String broadcastId = getRandom(broadcastList);
-        Configuration broadcast = Config.ANNOUNCEMENTS.getSection(broadcastId);
+        Configuration broadcast = Files.getConfig().getSection(broadcastId);
 
         for (String message : broadcast.getStringList("lines")) {
             for (ProxiedPlayer p : plugin.getProxy().getPlayers()) {

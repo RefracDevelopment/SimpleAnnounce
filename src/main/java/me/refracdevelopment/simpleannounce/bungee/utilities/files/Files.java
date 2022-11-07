@@ -44,7 +44,7 @@ public class Files {
             if (!resourceFile.exists()) {
                 resourceFile.createNewFile();
                 try (InputStream in = plugin.getResourceAsStream(resource);
-                     OutputStream out = new FileOutputStream(resourceFile)) {
+                     OutputStream out = java.nio.file.Files.newOutputStream(resourceFile.toPath())) {
                     ByteStreams.copy(in, out);
                 }
             }
@@ -78,9 +78,6 @@ public class Files {
             Color.log("&cFailed to load discord.yml");
             Color.log(e.getMessage());
         }
-
-        Config.loadConfig();
-        Discord.loadDiscord();
 
         Color.log("&c==========================================");
         Color.log("&aAll files have been loaded correctly!");

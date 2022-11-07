@@ -24,7 +24,6 @@ package me.refracdevelopment.simpleannounce.spigot.utilities.chat;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.refracdevelopment.simpleannounce.spigot.utilities.VersionCheck;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

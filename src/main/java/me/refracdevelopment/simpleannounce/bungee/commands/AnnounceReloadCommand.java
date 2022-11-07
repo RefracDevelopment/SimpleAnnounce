@@ -24,6 +24,7 @@ package me.refracdevelopment.simpleannounce.bungee.commands;
 import me.refracdevelopment.simpleannounce.bungee.BungeeAnnounce;
 import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
+import me.refracdevelopment.simpleannounce.bungee.utilities.files.Discord;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Files;
 import me.refracdevelopment.simpleannounce.shared.Permissions;
 import net.md_5.bungee.api.CommandSender;
@@ -46,6 +47,8 @@ public class AnnounceReloadCommand extends Command {
         }
 
         Files.loadFiles(plugin);
+        Config.loadConfig();
+        Discord.loadDiscord();
         Color.sendMessage(sender, Config.RELOAD, true, true);
     }
 }

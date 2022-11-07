@@ -24,6 +24,7 @@ package me.refracdevelopment.simpleannounce.bungee;
 import lombok.Getter;
 import me.refracdevelopment.simpleannounce.bungee.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Config;
+import me.refracdevelopment.simpleannounce.bungee.utilities.files.Discord;
 import me.refracdevelopment.simpleannounce.shared.Settings;
 import me.refracdevelopment.simpleannounce.bungee.utilities.files.Files;
 import me.refracdevelopment.simpleannounce.bungee.commands.AnnounceCommand;
@@ -44,6 +45,8 @@ public final class BungeeAnnounce extends Plugin {
     public void onEnable() {
         // Plugin startup logic
         Files.loadFiles(this);
+        Config.loadConfig();
+        Discord.loadDiscord();
 
         this.discordImpl = new DiscordImpl();
 

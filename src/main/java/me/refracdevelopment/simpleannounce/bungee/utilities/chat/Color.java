@@ -21,7 +21,6 @@
  */
 package me.refracdevelopment.simpleannounce.bungee.utilities.chat;
 
-import me.refracdevelopment.simpleannounce.spigot.utilities.VersionCheck;
 import me.refracdevelopment.simpleannounce.spigot.utilities.files.Config;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
