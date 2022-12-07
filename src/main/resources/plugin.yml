@@ -1,11 +1,9 @@
-name: 'SimpleAnnounce'
-version: '${project.version}'
-main: me.refracdevelopment.simpleannounce.spigot.SimpleAnnounce
-api-version: '1.13'
+name: SimpleAnnounce
+version: '@version@'
+main: me.refracdevelopment.simpleannounce.SimpleAnnounce
+author: RefracDevelopment
+api-version: "1.13"
 softdepend:
-  - 'PlaceholderAPI'
-authors:
-  - 'RefracDevelopment'
-  - 'Refrac'
-description: 'A Lightweight Announcer Plugin'
-website: 'https://discord.refracdev.ml'
+  - PlaceholderAPI
+description: A Lightweight Automatic Announcer Plugin
+website: https://discord.refracdev.ml/
