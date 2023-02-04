@@ -1,5 +1,6 @@
-package me.refracdevelopment.simpleannounce.utilities;
+package me.refracdevelopment.simpleannounce.listeners;
 
+import me.refracdevelopment.simpleannounce.utilities.Utilities;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

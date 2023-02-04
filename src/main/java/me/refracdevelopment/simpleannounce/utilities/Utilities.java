@@ -27,18 +27,4 @@ public class Utilities {
         player.sendMessage("");
     }
 
-    /**
-     * Gets a list of player names to show in tab completions, vanished players
-     *
-     * @param arg The argument for the name
-     * @return a list of online players excluding the
-     */
-    public static List<String> getPlayerTabComplete(String arg) {
-        List<String> players = new ArrayList<>();
-        List<String> completions = new ArrayList<>();
-        Bukkit.getOnlinePlayers().forEach(player -> players.add(player.getName()));
-        StringUtil.copyPartialMatches(arg, players, completions);
-        return completions;
-    }
-
 }

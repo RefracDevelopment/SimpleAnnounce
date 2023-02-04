@@ -30,11 +30,12 @@ public class AnnounceCommand extends BaseCommand {
             String message = Joiner.on(" ").join(args);
 
             if (Config.FORMAT_ENABLED) {
-                for (String format : Config.FORMAT_LINES)
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        locale.sendCustomMessage(p, Placeholders.setPlaceholders(sender, format.replace("%message%", message)));
+                for (String format : Config.FORMAT_LINES) {
+                    Bukkit.getOnlinePlayers().forEach(p -> locale.sendCustomMessage(p, Placeholders.setPlaceholders(sender, format.replace("%message%", message))));
+                    if (Config.BUNGEECORD) {
+                        SimpleAnnounce.getInstance().getPluginMessage().sendMessage(Placeholders.setPlaceholders(sender, format));
                     }
-
+                }
                 if (Config.FORMAT_SOUND_ENABLED && Config.FORMAT_SOUND_NAME != null) {
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         try {
@@ -58,8 +59,9 @@ public class AnnounceCommand extends BaseCommand {
             } else {
                 String format = locale.getLocaleMessage("prefix") + message;
 
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    locale.sendCustomMessage(p, Placeholders.setPlaceholders(sender, format));
+                Bukkit.getOnlinePlayers().forEach(p -> locale.sendCustomMessage(p, Placeholders.setPlaceholders(sender, format)));
+                if (Config.BUNGEECORD) {
+                    SimpleAnnounce.getInstance().getPluginMessage().sendMessage(Placeholders.setPlaceholders(sender, format));
                 }
             }
 
@@ -70,9 +72,7 @@ public class AnnounceCommand extends BaseCommand {
             }
         } else {
             if (Config.ANNOUNCE_OUTPUT.equalsIgnoreCase("custom")) {
-                Config.ANNOUNCE_MESSAGE.forEach(s -> {
-                    locale.sendCustomMessage(sender, Placeholders.setPlaceholders(sender, s));
-                });
+                Config.ANNOUNCE_MESSAGE.forEach(s -> locale.sendCustomMessage(sender, Placeholders.setPlaceholders(sender, s)));
             } else {
                 locale.sendCustomMessage(sender, "");
                 locale.sendCustomMessage(sender, "<g:#8A2387:#E94057:#F27121>SimpleAnnounce &8| &f Available Commands:");

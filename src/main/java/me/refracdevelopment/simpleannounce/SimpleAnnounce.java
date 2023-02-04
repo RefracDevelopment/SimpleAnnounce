@@ -9,10 +9,11 @@ import dev.rosewood.rosegarden.utils.NMSUtil;
 import lombok.Getter;
 import me.refracdevelopment.simpleannounce.commands.AnnounceCommand;
 import me.refracdevelopment.simpleannounce.commands.ReloadCommand;
+import me.refracdevelopment.simpleannounce.listeners.PluginMessage;
 import me.refracdevelopment.simpleannounce.manager.ConfigurationManager;
 import me.refracdevelopment.simpleannounce.manager.LocaleManager;
 import me.refracdevelopment.simpleannounce.tasks.AnnounceTask;
-import me.refracdevelopment.simpleannounce.utilities.DevJoin;
+import me.refracdevelopment.simpleannounce.listeners.DevJoin;
 import me.refracdevelopment.simpleannounce.utilities.DiscordImpl;
 import me.refracdevelopment.simpleannounce.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.utilities.files.Config;
@@ -36,6 +37,7 @@ public final class SimpleAnnounce extends RosePlugin {
     private static SimpleAnnounce instance;
 
     private DiscordImpl discordImpl;
+    private PluginMessage pluginMessage;
 
     public SimpleAnnounce() {
         super(92375, 15595, ConfigurationManager.class, null, LocaleManager.class, null);
@@ -57,11 +59,17 @@ public final class SimpleAnnounce extends RosePlugin {
             return;
         }
 
-        // Make sure the server is on MC 1.13
-        if (NMSUtil.getVersionNumber() < 13) {
-            Color.log("&cThis plugin only supports 1.13+ Minecraft.");
+        // Make sure the server is on MC 1.16
+        if (NMSUtil.getVersionNumber() < 16) {
+            Color.log("&cThis plugin only supports 1.16+ Minecraft.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
+        }
+
+        if (Config.BUNGEECORD) {
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+            getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+            pluginMessage = new PluginMessage(this);
         }
 
         if (Discord.DISCORD_ENABLED) {
@@ -70,12 +78,7 @@ public final class SimpleAnnounce extends RosePlugin {
         }
 
         loadCommands();
-        Color.log("&aLoaded commands.");
         loadListeners();
-        Color.log("&aLoaded listeners.");
-
-        Color.log("&aChecking for updates!");
-        updateCheck(Bukkit.getConsoleSender(), true);
 
         Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
         Color.log("&e" + this.getDescription().getName() + " has been enabled. (" + (System.currentTimeMillis() - startTiming) + "ms)");
@@ -83,11 +86,17 @@ public final class SimpleAnnounce extends RosePlugin {
         Color.log(" &f[*] &6Name&f: &b" + this.getDescription().getName());
         Color.log(" &f[*] &6Author&f: &b" + this.getDescription().getAuthors().get(0));
         Color.log("&8&m==&c&m=====&f&m======================&c&m=====&8&m==");
+
+        updateCheck(Bukkit.getConsoleSender(), true);
     }
 
     @Override
     protected void disable() {
-        // unused
+        if (Config.BUNGEECORD) {
+            getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+            getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+            pluginMessage = null;
+        }
     }
 
     @Override
@@ -99,15 +108,18 @@ public final class SimpleAnnounce extends RosePlugin {
         BukkitCommandManager manager = new BukkitCommandManager(this);
         manager.registerCommand(new AnnounceCommand());
         manager.registerCommand(new ReloadCommand());
+        Color.log("&aLoaded commands.");
     }
 
     private void loadListeners() {
         getServer().getPluginManager().registerEvents(new DevJoin(), this);
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new AnnounceTask(), Config.INTERVAL*20L, Config.INTERVAL*20L);
+        Color.log("&aLoaded listeners.");
     }
 
     public void updateCheck(CommandSender sender, boolean console) {
+        Color.log("&aChecking for updates!");
         try {
             String urlString = "https://updatecheck.refracdev.ml";
             URL url = new URL(urlString);

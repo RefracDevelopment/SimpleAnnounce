@@ -31,16 +31,26 @@ public class AnnounceTask implements Runnable {
         String broadcastId = getRandom(broadcastList);
         ConfigurationSection broadcast = Config.ANNOUNCEMENTS.getConfigurationSection(broadcastId);
 
+        if (broadcast == null) {
+            Bukkit.getScheduler().cancelTasks(SimpleAnnounce.getInstance());
+            return;
+        }
+
         for (String message : broadcast.getStringList("lines")) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !broadcast.getString("permission").equalsIgnoreCase("none")) {
                     locale.sendCustomMessage(p, Placeholders.setPlaceholders(p, message));
+                    if (Config.BUNGEECORD) {
+                        SimpleAnnounce.getInstance().getPluginMessage().sendMessage(Placeholders.setPlaceholders(p, message));
+                    }
                 } else if (broadcast.getString("permission").equalsIgnoreCase("none")) {
                     locale.sendCustomMessage(p, Placeholders.setPlaceholders(p, message));
+                    if (Config.BUNGEECORD) {
+                        SimpleAnnounce.getInstance().getPluginMessage().sendMessage(Placeholders.setPlaceholders(p, message));
+                    }
                 }
             }
         }
-
 
         if (broadcast.getBoolean("sound.enabled")) {
             for (Player p : Bukkit.getOnlinePlayers()) {

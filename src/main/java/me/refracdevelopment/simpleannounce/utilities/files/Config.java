@@ -7,7 +7,8 @@ import java.util.List;
 
 public class Config {
     // General
-    public static int INTERVAL;
+    public static long INTERVAL;
+    public static boolean BUNGEECORD;
 
     // Help Command
     public static String ANNOUNCE_OUTPUT;
@@ -26,7 +27,8 @@ public class Config {
 
     public static void loadConfig() {
         // General
-        INTERVAL = ConfigurationManager.Setting.INTERVAL.getInt();
+        INTERVAL = ConfigurationManager.Setting.INTERVAL.getLong();
+        BUNGEECORD = ConfigurationManager.Setting.BUNGEECORD.getBoolean();
 
         // Help Command
         ANNOUNCE_OUTPUT = ConfigurationManager.Setting.ANNOUNCE_OUTPUT.getString();

@@ -14,6 +14,7 @@ public class ConfigurationManager extends AbstractConfigurationManager {
     public enum Setting implements RoseSetting {
         // Config Settings
         INTERVAL("interval", 300, "Set all announcements interval in seconds"),
+        BUNGEECORD("bungeecord", false, "Enable this to allow messages", "To be sent using the BungeeCord Plugin Messaging Protocol", "This also works for proxies like Velocity"),
         ANNOUNCE_OUTPUT("announce-output", "default"),
         ANNOUNCE_MESSAGE("announce-message", Arrays.asList(
                 "",

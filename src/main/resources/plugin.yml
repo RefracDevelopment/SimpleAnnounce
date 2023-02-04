@@ -3,7 +3,25 @@ version: '@version@'
 main: me.refracdevelopment.simpleannounce.SimpleAnnounce
 author: RefracDevelopment
 api-version: "1.13"
-softdepend:
+depend:
   - PlaceholderAPI
 description: A Lightweight Automatic Announcer Plugin
 website: https://discord.refracdev.ml/
+
+permissions:
+  simpleannounce.*:
+    default: op
+    description: Gives all permissions
+    children:
+      simpleannounce.command.announce: true
+      simpleannounce.command.reload: true
+      simpleannounce.admin: true
+  simpleannounce.command.announce:
+    default: op
+    description: Allows you announce messages
+  simpleannounce.command.reload:
+    default: op
+    description: Allows you to reload the configs
+  simpleannounce.admin:
+    default: op
+    description: Allows you to see debug/error messages

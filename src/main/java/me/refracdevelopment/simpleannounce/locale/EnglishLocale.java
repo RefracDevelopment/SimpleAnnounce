@@ -19,7 +19,7 @@ public class EnglishLocale implements Locale {
 
     @Override
     public Map<String, Object> getDefaultLocaleValues() {
-        return new LinkedHashMap() {{
+        return new LinkedHashMap<String, Object>() {{
             this.put("#0", "Plugin Message Prefix");
             this.put("prefix", "<g:#8A2387:#E94057:#F27121>SimpleAnnounce &8| &f");
 
