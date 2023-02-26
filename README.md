@@ -1,17 +1,16 @@
 # SimpleAnnounce
 A Simple Plugin To Keep Your Players Updated
 
-If you have any suggestions feel free to let me know on [Discord](https://discord.gg/EFeSKPg739).
+### Issue Reporting/Support
 
-## Normal Installation
+Please report all issues/support questions to the [Issues](https://github.com/RefracDevelopment/SimpleAnnounce/issues) tab or [Discord](https://discord.refracdev.ml).
 
-If you are not a developer, you can download [SimpleAnnounce](https://www.spigotmc.org/resources/92375/) for free!
+### Suggestions
 
-## Contributors
-Contributors can be found in the [CONTRIBUTORS](CONTRIBUTORS.md) file.
+Suggestion can be posted in [Issues](https://github.com/RefracDevelopment/SimpleAnnounce/issues) or [Discord](https://discord.refracdev.ml) which is reviewed by project maintainers, but feel free to make a pull request to add cool features without posting there!
 
-## License
-License information can be found in the [LICENSE](LICENSE) file.
+### License
+Please view the [LICENSE](LICENSE) file for more information on the license of this source code.
 
 ### Libraries Used
 [RoseGarden](https://github.com/Rosewood-Development/RoseGarden) By [Rosewood Developement](https://github.com/Rosewood-Development)
