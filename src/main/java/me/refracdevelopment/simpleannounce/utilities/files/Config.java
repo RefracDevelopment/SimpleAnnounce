@@ -9,6 +9,7 @@ public class Config {
     // General
     public static long INTERVAL;
     public static boolean BUNGEECORD;
+    public static boolean UPDATE_ON_JOIN;
 
     // Help Command
     public static String ANNOUNCE_OUTPUT;

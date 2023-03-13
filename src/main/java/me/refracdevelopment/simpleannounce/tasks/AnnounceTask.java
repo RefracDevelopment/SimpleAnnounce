@@ -1,7 +1,9 @@
 package me.refracdevelopment.simpleannounce.tasks;
 
 import me.refracdevelopment.simpleannounce.SimpleAnnounce;
+import me.refracdevelopment.simpleannounce.data.ProfileData;
 import me.refracdevelopment.simpleannounce.manager.LocaleManager;
+import me.refracdevelopment.simpleannounce.utilities.Permissions;
 import me.refracdevelopment.simpleannounce.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.utilities.chat.Placeholders;
 import me.refracdevelopment.simpleannounce.utilities.files.Config;
@@ -38,6 +40,10 @@ public class AnnounceTask implements Runnable {
 
         for (String message : broadcast.getStringList("lines")) {
             for (Player p : Bukkit.getOnlinePlayers()) {
+                ProfileData profile = SimpleAnnounce.getInstance().getProfileManager().getProfile(p.getUniqueId()).getData();
+
+                if (profile.getAnnouncements().isToggle()) continue;
+
                 if (p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !broadcast.getString("permission").equalsIgnoreCase("none")) {
                     locale.sendCustomMessage(p, Placeholders.setPlaceholders(p, message));
                     if (Config.BUNGEECORD) {
@@ -54,6 +60,10 @@ public class AnnounceTask implements Runnable {
 
         if (broadcast.getBoolean("sound.enabled")) {
             for (Player p : Bukkit.getOnlinePlayers()) {
+                ProfileData profile = SimpleAnnounce.getInstance().getProfileManager().getProfile(p.getUniqueId()).getData();
+
+                if (profile.getAnnouncements().isToggle()) continue;
+
                 try {
                     if (p.hasPermission(Objects.requireNonNull(broadcast.getString("permission"))) && !broadcast.getString("permission").equalsIgnoreCase("none")) {
                         p.playSound(p.getLocation(), Sound.valueOf(broadcast.getString("sound.name")),

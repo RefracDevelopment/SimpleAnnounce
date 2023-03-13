@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.Default;
 import com.google.common.base.Joiner;
 import me.refracdevelopment.simpleannounce.SimpleAnnounce;
 import me.refracdevelopment.simpleannounce.manager.LocaleManager;
+import me.refracdevelopment.simpleannounce.utilities.Permissions;
 import me.refracdevelopment.simpleannounce.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.utilities.chat.Placeholders;
 import me.refracdevelopment.simpleannounce.utilities.files.Config;
@@ -18,7 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandAlias("announce")
-@CommandPermission("simpleannounce.command.announce")
+@CommandPermission(Permissions.ANNOUNCE_COMMAND)
 public class AnnounceCommand extends BaseCommand {
 
     @Default

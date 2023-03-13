@@ -22,6 +22,9 @@ permissions:
   simpleannounce.command.reload:
     default: op
     description: Allows you to reload the configs
+  simpleannounce.command.toggle:
+    default: op
+    description: Allows you toggle announcements
   simpleannounce.admin:
     default: op
     description: Allows you to see debug/error messages

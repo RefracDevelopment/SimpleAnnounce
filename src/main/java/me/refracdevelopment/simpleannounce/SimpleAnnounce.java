@@ -9,11 +9,13 @@ import dev.rosewood.rosegarden.utils.NMSUtil;
 import lombok.Getter;
 import me.refracdevelopment.simpleannounce.commands.AnnounceCommand;
 import me.refracdevelopment.simpleannounce.commands.ReloadCommand;
+import me.refracdevelopment.simpleannounce.commands.ToggleCommand;
 import me.refracdevelopment.simpleannounce.listeners.PluginMessage;
 import me.refracdevelopment.simpleannounce.manager.ConfigurationManager;
 import me.refracdevelopment.simpleannounce.manager.LocaleManager;
+import me.refracdevelopment.simpleannounce.manager.ProfileManager;
 import me.refracdevelopment.simpleannounce.tasks.AnnounceTask;
-import me.refracdevelopment.simpleannounce.listeners.DevJoin;
+import me.refracdevelopment.simpleannounce.listeners.JoinListener;
 import me.refracdevelopment.simpleannounce.utilities.DiscordImpl;
 import me.refracdevelopment.simpleannounce.utilities.chat.Color;
 import me.refracdevelopment.simpleannounce.utilities.files.Config;
@@ -36,6 +38,7 @@ public final class SimpleAnnounce extends RosePlugin {
     @Getter
     private static SimpleAnnounce instance;
 
+    private ProfileManager profileManager;
     private DiscordImpl discordImpl;
     private PluginMessage pluginMessage;
 
@@ -65,6 +68,8 @@ public final class SimpleAnnounce extends RosePlugin {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        profileManager = new ProfileManager();
 
         if (Config.BUNGEECORD) {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -108,11 +113,12 @@ public final class SimpleAnnounce extends RosePlugin {
         BukkitCommandManager manager = new BukkitCommandManager(this);
         manager.registerCommand(new AnnounceCommand());
         manager.registerCommand(new ReloadCommand());
+        manager.registerCommand(new ToggleCommand());
         Color.log("&aLoaded commands.");
     }
 
     private void loadListeners() {
-        getServer().getPluginManager().registerEvents(new DevJoin(), this);
+        getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new AnnounceTask(), Config.INTERVAL*20L, Config.INTERVAL*20L);
         Color.log("&aLoaded listeners.");

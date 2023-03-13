@@ -15,6 +15,7 @@ public class ConfigurationManager extends AbstractConfigurationManager {
         // Config Settings
         INTERVAL("interval", 300, "Set all announcements interval in seconds"),
         BUNGEECORD("bungeecord", false, "Enable this to allow messages", "To be sent using the BungeeCord Plugin Messaging Protocol", "This also works for proxies like Velocity"),
+        UPDATE_ON_JOIN("update-on-join", true, "Enable this to receive a join message", "when there is an update available"),
         ANNOUNCE_OUTPUT("announce-output", "default"),
         ANNOUNCE_MESSAGE("announce-message", Arrays.asList(
                 "",
